@@ -44,7 +44,7 @@ main {
   max-width:30rem;
   padding: 1rem;
   border-radius: 8px;;
-  background-color: #457b9daa;
+  background-color: #457b9dcc;
   text-align: center;
   color: white;
 }
@@ -60,7 +60,10 @@ main {
   font-style: oblique;
 }
 
-i.fa-handshake {
-  font-size: 6rem;
-  color: var(--celadon-blue);
+i.fa-handshake,
+i.fa-hand-holding-usd,
+i.fa-dice-d20 {
+  font-size: 3rem;
+  /* color: var(--celadon-blue); */
+  color: #457b9dcc;
 }
