@@ -1,0 +1,66 @@
+
+:root {
+  --imperial-red: #e63946ff;
+  --honeydew: #f1faeeff;
+  --powder-blue: #a8dadcff;
+  --celadon-blue: #457b9dff;
+  --prussian-blue: #1d3557ff;
+}
+
+
+body {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  height: 3rem;
+  padding: 8px;
+  background-color: var(--celadon-blue);
+  font-size: 1.3rem;
+  color: white;
+}
+
+i {
+  margin: 0 5px;
+  font-size: 1.5rem;  
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  min-height: calc(100vh - 3rem);
+  padding: 10px;
+  background: linear-gradient(rgba(255, 255, 255, 0.7),
+                              rgba(255, 255, 255, 0.7)),
+                              url("https://img.maximummedia.ie/joe_ie/eyJkYXRhIjoie1widXJsXCI6XCJodHRwOlxcXC9cXFwvbWVkaWEtam9lLm1heGltdW1tZWRpYS5pZS5zMy5hbWF6b25hd3MuY29tXFxcL3dwLWNvbnRlbnRcXFwvdXBsb2Fkc1xcXC8yMDE5XFxcLzEwXFxcLzMxMTQ0MDM5XFxcL2xvdHRlcnkuanBnXCIsXCJ3aWR0aFwiOjY0MCxcImhlaWdodFwiOjM2MCxcImRlZmF1bHRcIjpcImh0dHBzOlxcXC9cXFwvd3d3LmpvZS5pZVxcXC9hc3NldHNcXFwvaW1hZ2VzXFxcL2pvZVxcXC9uby1pbWFnZS5wbmc_aWQ9NDNiY2E5ZGU3ZWIyNjk3MzdhMGZcIixcIm9wdGlvbnNcIjpbXX0iLCJoYXNoIjoiNTJlNjgyMzg5NmRmZTNiZTJmMTJmNGQyYTMzMjg4YzI4NDY2OWQzNyJ9/lottery.jpg");
+  background-size: cover;
+}
+
+.hero {
+  max-width:30rem;
+  padding: 1rem;
+  border-radius: 8px;;
+  background-color: #457b9daa;
+  text-align: center;
+  color: white;
+}
+
+.hero h1 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  font-style: oblique;
+}
+
+i.fa-handshake {
+  font-size: 6rem;
+  color: var(--celadon-blue);
+}
