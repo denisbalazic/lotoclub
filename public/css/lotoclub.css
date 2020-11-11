@@ -81,6 +81,7 @@ form {
 }
 
 input {
+  display: block;
   height: 2.5rem;
   width: 100%;
   margin-bottom: 10px;
@@ -105,4 +106,59 @@ button:hover {
   border: 2px solid var(--powder-blue);
   background-color: var(--celadon-blue);
   color: white;
+}
+
+/**************** Navbar ***********************/
+nav {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 100%;
+  padding: 10px;
+  background-color: var(--prussian-blue);
+  color: white;
+  transition: 0.4s;
+}
+
+nav.hidden {
+  right: -200px;
+}
+
+nav ul {
+  margin-top: 1rem;
+}
+
+nav li {
+  margin: 8px 0;
+  font-size: 1.3rem;
+}
+
+/**************** Combinations *********************/
+.combinations-container {
+  width: 100%;
+  min-width: 300px;
+  max-width: 400px;
+}
+.combination {
+  margin: 5px 0;
+  border-radius: 5px;
+  background-color: var(--powder-blue);
+}
+
+.combination-heading {
+  padding: 0 5px;
+  font-size: 0.8rem;
+}
+
+.combination-numbers {
+  display: flex;
+}
+
+.number {
+  flex: 1 100px;
+  margin: 5px;
+  background-color: white;
+  text-align: center;
+  font-size: 1.5rem;
 }
