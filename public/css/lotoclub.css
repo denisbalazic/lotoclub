@@ -132,6 +132,15 @@ nav ul {
 nav li {
   margin: 8px 0;
   font-size: 1.3rem;
+  transition: 0.4s;
+}
+
+nav li:hover {
+  padding-left: 5px;
+}
+
+.active {
+  color: var(--celadon-blue);
 }
 
 /**************** Combinations *********************/
@@ -161,4 +170,53 @@ nav li {
   background-color: white;
   text-align: center;
   font-size: 1.5rem;
+}
+
+/********** MyCombinations ********************/
+.tab-names {
+  display: flex;
+  justify-content: space-around;
+}
+
+button.tab-selector {
+  flex: 1 100px;
+  border: none;
+  border-radius: 5px 5px 0 0;
+  font-size: 1.1rem;
+  background-color: #a8dadc66;
+  text-align: center;
+}
+
+.tab-selector.selected {
+  background-color: var(--powder-blue);
+}
+
+.tab {
+  padding: 5px;
+  border-radius: 0 0 5px 5px;
+  background-color: var(--powder-blue);
+}
+
+.tab .combination-numbers {
+  border-radius: 5px;
+  background-color: var(--celadon-blue);
+}
+
+.numbers-table {
+  display: flex;
+  padding: 10px;
+  background-color: var(--powder-blue);
+}
+
+.column {
+  flex-grow: 1;
+}
+
+.column.euro {
+  margin-left: 10px;
+}
+
+.number.selected {
+  color: red;
+  background-color: var(--powder-blue);
 }
