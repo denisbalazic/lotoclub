@@ -16,13 +16,11 @@ closeNav.addEventListener("click", () => {
   navBar.classList.add("hidden");
 });
 
-console.log("ASEFSF");
 /* 
  * Styles selected option in navbar
  */
 navBar.addEventListener("click", (e) => {
   e.preventDefault();
-  console.log(e);
   for(link of links) {
     link.classList.remove("active");
   }
