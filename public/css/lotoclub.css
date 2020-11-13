@@ -166,6 +166,7 @@ nav li:hover {
 
 .number {
   flex: 1 100px;
+  min-height: 2.2rem;
   margin: 5px;
   background-color: white;
   text-align: center;
