@@ -1,49 +1,40 @@
 const tabs = document.querySelector(".tab-names");
 const mainCombDisplay = document.querySelectorAll(".combination-numbers .main");
 const euroCombDisplay = document.querySelectorAll(".combination-numbers .euro");
+const mainNumbers = document.querySelectorAll(".numbers-table .main .number");
+const euroNumbers = document.querySelectorAll(".numbers-table .euro .number");
 const numbers = document.querySelector(".numbers-table");
+const changeBtn = document.querySelector("#change-btn");
+
+let combNo = 1;
+let combinations = fetchCombinations();
+let combination = combinations[0] || {};
+displayCombination();
+styleTable();
 
 
-let combination = {
-  mainNums: [],
-  euroNums: [],
-  isMain: function(num) {
-    return this.mainNums.includes(num);
-  },
-  isEuro: function(num) {
-    return this.euroNums.includes(num);
-  },
-  addMain: function(num) {
-    this.addNumber(num, "mainNums");
-  },
-  addEuro: function(num) {
-    this.addNumber(num, "euroNums");
-  },
-  addNumber: function(num, select) {
-    select === "mainNums" ? length = 5 : length = 2;
-    // deletes number if it is present
-    if(this[select].includes(num)) {
-      const index = combination[select].indexOf(num);
-      console.log("deleted: ", combination[select].splice(index, 1));
-    // adds number if there is room
-    } else if (this[select].length < length) {
-      this[select].push(num);
-      this[select].sort((a, b) => a < b ? -1 : 1);
-      console.log("added: ", num);
-    } else {
-      console.log("cant add or delete number");
-      return false;
+/* 
+ * Fetch combinations from server api
+ */
+function fetchCombinations() {
+  const combs = [
+    {
+      mainNums: [2, 5, 19, 27, 36],
+      euroNums: [1, 9]
     }
-    console.log(this[select]);
-  }
+  ];
+  return combs;
 }
+
 
 /* 
  * Tabs control
  * Switches between different combinations
  */
 tabs.addEventListener("click", (e) => {
-  chooseMycombination(e.target.innerText);
+  combNo = parseInt(e.target.id);
+  combination = combinations[combNo - 1];
+  console.log(combNo, combination);
   displayCombination();
   styleTable();
   for(tab of tabs.children) {
@@ -52,20 +43,6 @@ tabs.addEventListener("click", (e) => {
   e.target.classList.add("selected");
 })
 
-
-/*
- * Chooses combination to be displayed, 
- * retrieves data from api
- */
-function chooseMycombination(combName) {
-  if(combName === "Dodatna") {
-    combination.mainNums = [1, 4, 23, 33, 41]; // return dummy data
-    combination.euroNums = [2, 6]; // return dummy data
-  } else {
-    combination.mainNums = [6, 8, 17, 24, 45]; // return dummy data
-    combination.euroNums = [3, 8]; // return dummy data
-  }
-}
 
 /* 
  * Populate combination display
@@ -82,6 +59,7 @@ function displayCombination() {
     i++;
   }
 }
+
 
 /* 
  * Style numbers in table according to combination
@@ -105,12 +83,108 @@ function styleTable() {
   }
 }
 
+
+/* 
+ * Triggers adding or deleting of numbers from combination
+ */
 numbers.addEventListener("click", (e) => {
   const selectedNum = parseInt(e.target.innerText);
   if(e.target.closest(".column.main")) {
-    combination.addMain(selectedNum);
+    addMain(selectedNum);
   } else if(e.target.closest(".column.euro")) {
-    combination.addEuro(selectedNum);
+    addEuro(selectedNum);
   }
   styleTable();
 })
+
+
+/* 
+ * Add or delete number from combination
+ */
+function addMain(num) {
+  addNumber(num, "mainNums");
+}
+
+function addEuro(num) {
+  addNumber(num, "euroNums");
+}
+
+function addNumber(num, select) {
+  select === "mainNums" ? length = 5 : length = 2;
+  // deletes number if it is present
+  if(combination[select].includes(num)) {
+    const index = combination[select].indexOf(num);
+    console.log("deleted: ", combination[select].splice(index, 1));
+  // adds number if there is room
+  } else if (combination[select].length < length) {
+    combination[select].push(num);
+    combination[select].sort((a, b) => a < b ? -1 : 1);
+    console.log("added: ", num);
+  } else {
+    console.log("cant add or delete number");
+    return false;
+  }
+}
+
+
+/* 
+ * Changes combination or adds new if first time 
+ * according to selected numbers
+ * and posts changes to server
+ */
+changeBtn.addEventListener("click", () => {
+  combinations[combNo] = combination;
+  displayCombination();
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+ * Combination object constructor
+ */
+// function Combination(mainNums, euroNums, type) {
+//   this.mainNums = mainNums;
+//   this.euroNums = euroNums;
+//   this.type = type;
+//   this.isMain = function(num) {
+//     return this.mainNums.includes(num);
+//   };
+//   this.isEuro = function(num) {
+//     return this.euroNums.includes(num);
+//   };
+//   this.addMain = function(num) {
+//     this.addNumber(num, "mainNums");
+//   };
+//   this.addEuro = function(num) {
+//     this.addNumber(num, "euroNums");
+//   };
+//   this.addNumber = function(num, select) {
+//     select === "mainNums" ? length = 5 : length = 2;
+//     // deletes number if it is present
+//     if(this[select].includes(num)) {
+//       const index = combination[select].indexOf(num);
+//       console.log("deleted: ", combination[select].splice(index, 1));
+//     // adds number if there is room
+//     } else if (this[select].length < length) {
+//       this[select].push(num);
+//       this[select].sort((a, b) => a < b ? -1 : 1);
+//       console.log("added: ", num);
+//     } else {
+//       console.log("cant add or delete number");
+//       return false;
+//     }
+//     console.log(this[select]);
+//   }
+// }
