@@ -162,6 +162,11 @@ nav li:hover {
 
 .combination-numbers {
   display: flex;
+  border: 2px solid var(--celadon-blue);
+}
+
+.combination-numbers.editing {
+  border: 2px solid var(--imperial-red);
 }
 
 .number {
@@ -190,6 +195,16 @@ button.tab-selector {
 
 .tab-selector.selected {
   background-color: var(--powder-blue);
+}
+
+#info {
+  height: 1rem;
+  font-size: 0.8rem;
+  color: var(--imperial-red);
+}
+
+#info.hidden {
+  display: none;
 }
 
 .tab {
