@@ -1,14 +1,17 @@
 const tabs = document.querySelector(".tab-names");
+const combDisplay = document.querySelector(".combination-numbers");
 const mainCombDisplay = document.querySelectorAll(".combination-numbers .main");
 const euroCombDisplay = document.querySelectorAll(".combination-numbers .euro");
 const mainNumbers = document.querySelectorAll(".numbers-table .main .number");
 const euroNumbers = document.querySelectorAll(".numbers-table .euro .number");
 const numbers = document.querySelector(".numbers-table");
 const changeBtn = document.querySelector("#change-btn");
+const info = document.querySelector("#info");
 
-let combNo = 1;
+let combIndex = 0;
 let combinations = fetchCombinations();
-let combination = combinations[0] || {};
+let combination = combinations[0];
+createTabs();
 displayCombination();
 styleTable();
 
@@ -20,10 +23,43 @@ function fetchCombinations() {
   const combs = [
     {
       mainNums: [2, 5, 19, 27, 36],
-      euroNums: [1, 9]
+      euroNums: [1, 9],
+      id: "comb-1",
+      name: "Glavna"
+    },
+    {
+      mainNums: [5, 6, 21, 30, 39],
+      euroNums: [4, 9],
+      id: "comb-2",
+      name: "Dodatna"
+    },
+    {
+      mainNums: [5, 11, 23, 36, 42],
+      euroNums: [1, 8],
+      id: "comb-3",
+      name: "Posebna"
     }
   ];
   return combs;
+}
+
+
+/* 
+ * Create tabs for combination control
+ * according to fetched combinations data
+ */
+function createTabs() {
+  let i = 1;
+  for(comb of combinations) {
+    const tab = document.createElement("button");
+    tab.classList.add("tab-selector");
+    i === 1 && tab.classList.add("selected");
+    tab.id = "comb-" + i.toString();
+    tab.innerText = comb.name;
+    tabs.append(tab);
+    i++;
+  }
+
 }
 
 
@@ -32,9 +68,9 @@ function fetchCombinations() {
  * Switches between different combinations
  */
 tabs.addEventListener("click", (e) => {
-  combNo = parseInt(e.target.id);
-  combination = combinations[combNo - 1];
-  console.log(combNo, combination);
+  combIndex = parseInt(e.target.id.slice(-1)) - 1;
+  combination = combinations[combIndex];
+  console.log(combIndex, combination);
   displayCombination();
   styleTable();
   for(tab of tabs.children) {
@@ -45,18 +81,26 @@ tabs.addEventListener("click", (e) => {
 
 
 /* 
- * Populate combination display
- */
+* Populate combination display
+*/
 function displayCombination() {
   let i = 0;
   for(number of mainCombDisplay) {
-    number.innerText = combination.mainNums[i];
+    number.innerText = combination.mainNums[i] || "";
     i++;
   }
   i = 0;
   for(number of euroCombDisplay) {
-    number.innerText = combination.euroNums[i];
+    number.innerText = combination.euroNums[i] || "";
     i++;
+  }
+  combDisplay.classList.remove("editing");
+  info.innerText = "";
+  if(combination.isEdited) {
+    combDisplay.classList.add("editing");
+    if(combination.mainNums.length === 5 && combination.euroNums.length === 2) {
+      info.innerText = "Trebate spremiti novu kombinaciju"
+    }
   }
 }
 
@@ -90,10 +134,11 @@ function styleTable() {
 numbers.addEventListener("click", (e) => {
   const selectedNum = parseInt(e.target.innerText);
   if(e.target.closest(".column.main")) {
-    addMain(selectedNum);
+    addNumber(selectedNum, "mainNums");
   } else if(e.target.closest(".column.euro")) {
-    addEuro(selectedNum);
+    addNumber(selectedNum, "euroNums");
   }
+  displayCombination();
   styleTable();
 })
 
@@ -101,14 +146,6 @@ numbers.addEventListener("click", (e) => {
 /* 
  * Add or delete number from combination
  */
-function addMain(num) {
-  addNumber(num, "mainNums");
-}
-
-function addEuro(num) {
-  addNumber(num, "euroNums");
-}
-
 function addNumber(num, select) {
   select === "mainNums" ? length = 5 : length = 2;
   // deletes number if it is present
@@ -124,6 +161,7 @@ function addNumber(num, select) {
     console.log("cant add or delete number");
     return false;
   }
+  combination.isEdited = true;
 }
 
 
@@ -133,8 +171,12 @@ function addNumber(num, select) {
  * and posts changes to server
  */
 changeBtn.addEventListener("click", () => {
-  combinations[combNo] = combination;
+  combinations[combIndex] = combination;
+  combDisplay.classList.remove("editing");
+  combination.isEdited = false;
   displayCombination();
+  styleTable();
+  //post combination to server
 })
 
 
