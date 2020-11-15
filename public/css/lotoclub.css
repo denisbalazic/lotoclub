@@ -5,6 +5,7 @@
   --powder-blue: #a8dadcff;
   --celadon-blue: #457b9dff;
   --prussian-blue: #1d3557ff;
+  --success-green: rgb(28, 100, 56);
 }
 
 
@@ -169,6 +170,10 @@ nav li:hover {
   border: 2px solid var(--imperial-red);
 }
 
+.combination-numbers.successful {
+  border: 2px solid var(--success-green);
+}
+
 .number {
   flex: 1 100px;
   margin: 5px;
@@ -200,6 +205,10 @@ button.tab-selector {
   height: 1rem;
   font-size: 0.8rem;
   color: var(--imperial-red);
+}
+
+#info.success {
+  color: var(--success-green);
 }
 
 #info.hidden {

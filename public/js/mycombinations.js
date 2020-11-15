@@ -109,19 +109,16 @@ function displayCombination() {
  * Style numbers in table according to combination
  */
 function styleTable() {  
-  for(number of mainNumbers) {
-    number.classList.remove("selected");
-    for(combNum of combination.mainNums) {
-      if(parseInt(number.innerText) === combNum) {
-        number.classList.add("selected");
-      }
-    }
-  }
-  for(number of euroNumbers) {
-    number.classList.remove("selected");
-    for(combNum of combination.euroNums) {
-      if(parseInt(number.innerText) === combNum) {
-        number.classList.add("selected");
+  styleNums(mainNumbers, combination.mainNums);
+  styleNums(euroNumbers, combination.euroNums);
+
+  function styleNums(tabNums, nums) {
+    for (number of tabNums) {
+      number.classList.remove("selected");
+      for (num of nums) {
+        if (parseInt(number.innerText) === num) {
+          number.classList.add("selected");
+        }
       }
     }
   }
@@ -171,13 +168,32 @@ function addNumber(num, select) {
  * and posts changes to server
  */
 changeBtn.addEventListener("click", () => {
-  combinations[combIndex] = combination;
-  combDisplay.classList.remove("editing");
-  combination.isEdited = false;
-  displayCombination();
-  styleTable();
-  //post combination to server
+  if(combination.mainNums.length === 5 && combination.euroNums.length === 2) {
+    combinations[combIndex] = combination;
+    combination.isEdited = false;
+    displayCombination();
+    styleTable();
+    //post combination to server should go here
+    //and if successful do next:
+    combDisplay.classList.add("successful");
+    setTimeout(() => combDisplay.classList.remove("successful"), 3000);
+    info.innerText = "Kombinacija uspješno spremljena";
+    info.classList.add("success");
+    setTimeout(() => {
+      info.innerText = "";
+      info.classList.remove("success");
+    }, 3000);
+  } else {
+    info.innerText = "Kombinacije nisu potpune";
+  }  
 })
+
+/* 
+ * Post combination to server
+ */
+function postCombination() {
+
+}
 
 
 
