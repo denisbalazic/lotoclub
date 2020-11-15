@@ -5,6 +5,7 @@
   --powder-blue: #a8dadcff;
   --celadon-blue: #457b9dff;
   --prussian-blue: #1d3557ff;
+  --success-green: rgb(28, 100, 56);
 }
 
 
@@ -169,6 +170,10 @@ nav li:hover {
   border: 2px solid var(--imperial-red);
 }
 
+.combination-numbers.successful {
+  border: 2px solid var(--success-green);
+}
+
 .number {
   flex: 1 100px;
   min-height: 2.2rem;
@@ -177,6 +182,16 @@ nav li:hover {
   text-align: center;
   font-size: 1.5rem;
 }
+
+.number.euro {
+  margin-left: 16px;
+}
+/* This removes margin given above for all except first of type */
+.number.euro ~ .number.euro {
+  margin-left: 5px;
+}
+
+
 
 /********** MyCombinations ********************/
 .tab-names {
@@ -201,6 +216,10 @@ button.tab-selector {
   height: 1rem;
   font-size: 0.8rem;
   color: var(--imperial-red);
+}
+
+#info.success {
+  color: var(--success-green);
 }
 
 #info.hidden {
@@ -233,6 +252,12 @@ button.tab-selector {
 }
 
 .number.selected {
-  color: red;
+  color: var(--imperial-red);
   background-color: var(--powder-blue);
 }
+
+.number.selected.success {
+  color: var(--success-green);
+  background-color: var(--powder-blue);
+}
+
