@@ -182,6 +182,16 @@ nav li:hover {
   font-size: 1.5rem;
 }
 
+.number.euro {
+  margin-left: 16px;
+}
+/* This removes margin given above for all except first of type */
+.number.euro ~ .number.euro {
+  margin-left: 5px;
+}
+
+
+
 /********** MyCombinations ********************/
 .tab-names {
   display: flex;
@@ -241,6 +251,12 @@ button.tab-selector {
 }
 
 .number.selected {
-  color: red;
+  color: var(--imperial-red);
   background-color: var(--powder-blue);
 }
+
+.number.selected.success {
+  color: var(--success-green);
+  background-color: var(--powder-blue);
+}
+

@@ -9,38 +9,32 @@ const changeBtn = document.querySelector("#change-btn");
 const info = document.querySelector("#info");
 
 let combIndex = 0;
-let combinations = fetchCombinations();
-let combination = combinations[0];
-createTabs();
-displayCombination();
-styleTable();
+let combinations = [];
+let combination;
+
+init();
+
+async function init() {
+  combinations = await fetchCombinations();
+  combination = combinations[0];
+  createTabs();
+  displayCombination();
+  styleTable();
+}
+
 
 
 /* 
  * Fetch combinations from server api
  */
-function fetchCombinations() {
-  const combs = [
-    {
-      mainNums: [2, 5, 19, 27, 36],
-      euroNums: [1, 9],
-      id: "comb-1",
-      name: "Glavna"
-    },
-    {
-      mainNums: [5, 6, 21, 30, 39],
-      euroNums: [4, 9],
-      id: "comb-2",
-      name: "Dodatna"
-    },
-    {
-      mainNums: [5, 11, 23, 36, 42],
-      euroNums: [1, 8],
-      id: "comb-3",
-      name: "Posebna"
-    }
-  ];
-  return combs;
+async function fetchCombinations() {
+  try {
+    const res = await fetch("http://localhost:3000/api/combinations/");
+    const data = await res.json();
+    return data;
+  } catch(e) {
+    console.log(e);
+  }
 }
 
 
@@ -109,15 +103,20 @@ function displayCombination() {
  * Style numbers in table according to combination
  */
 function styleTable() {  
-  styleNums(mainNumbers, combination.mainNums);
-  styleNums(euroNumbers, combination.euroNums);
+  styleNums(mainNumbers, combination.mainNums, 5);
+  styleNums(euroNumbers, combination.euroNums, 2);
 
-  function styleNums(tabNums, nums) {
+  function styleNums(tabNums, nums, n) {
     for (number of tabNums) {
       number.classList.remove("selected");
       for (num of nums) {
         if (parseInt(number.innerText) === num) {
           number.classList.add("selected");
+          if(nums.length === n) {
+            number.classList.add("success");
+          } else {
+            number.classList.remove("success");
+          }
         }
       }
     }
@@ -167,22 +166,25 @@ function addNumber(num, select) {
  * according to selected numbers
  * and posts changes to server
  */
-changeBtn.addEventListener("click", () => {
+changeBtn.addEventListener("click", async () => {
   if(combination.mainNums.length === 5 && combination.euroNums.length === 2) {
     combinations[combIndex] = combination;
     combination.isEdited = false;
     displayCombination();
     styleTable();
-    //post combination to server should go here
-    //and if successful do next:
-    combDisplay.classList.add("successful");
-    setTimeout(() => combDisplay.classList.remove("successful"), 3000);
-    info.innerText = "Kombinacija uspješno spremljena";
-    info.classList.add("success");
-    setTimeout(() => {
-      info.innerText = "";
-      info.classList.remove("success");
-    }, 3000);
+    const data = await postCombination();
+    if(data) {
+      combDisplay.classList.add("successful");
+      setTimeout(() => combDisplay.classList.remove("successful"), 3000);
+      info.innerText = "Kombinacija uspješno spremljena";
+      info.classList.add("success");
+      setTimeout(() => {
+        info.innerText = "";
+        info.classList.remove("success");
+      }, 3000);
+    } else {
+      info.innerText = "Something went wrong";
+    }    
   } else {
     info.innerText = "Kombinacije nisu potpune";
   }  
@@ -191,8 +193,22 @@ changeBtn.addEventListener("click", () => {
 /* 
  * Post combination to server
  */
-function postCombination() {
-
+async function postCombination() {
+  try {
+    const res = await fetch("http://localhost:3000/api/combinations/", 
+      {
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(combination)
+      });
+    const data = await res.json();
+    return data;
+  } catch(e) {
+    console.log(e);
+  }
 }
 
 
