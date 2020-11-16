@@ -2,10 +2,10 @@ const tabs = document.querySelector(".tab-names");
 const combDisplay = document.querySelector(".combination-numbers");
 const mainCombDisplay = document.querySelectorAll(".combination-numbers .main");
 const euroCombDisplay = document.querySelectorAll(".combination-numbers .euro");
-const mainNumbers = document.querySelectorAll(".numbers-table .main .number");
-const euroNumbers = document.querySelectorAll(".numbers-table .euro .number");
-const numbers = document.querySelector(".numbers-table");
-const changeBtn = document.querySelector("#change-btn");
+const mainNumbers = document.querySelectorAll("#numbers-table .main .number");
+const euroNumbers = document.querySelectorAll("#numbers-table .euro .number");
+const numbers = document.querySelector("#numbers-table");
+const saveBtn = document.querySelector("#save-btn");
 const info = document.querySelector("#info");
 
 let combIndex = 0;
@@ -159,7 +159,7 @@ function addNumber(num, select) {
  * according to selected numbers
  * and posts changes to server
  */
-changeBtn.addEventListener("click", async () => {
+saveBtn.addEventListener("click", async () => {
   if (combination.mainNums.length === 5 && combination.euroNums.length === 2) {
     combinations[combIndex] = combination;
     combination.isEdited = false;
