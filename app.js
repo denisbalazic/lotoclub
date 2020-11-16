@@ -36,7 +36,6 @@ app.get("/api/combinations", function (req, res) {
 });
 
 app.post("/api/combinations", function (req, res) {
-  console.log(req.body);
   res.status(201).json(req.body);
 });
 
