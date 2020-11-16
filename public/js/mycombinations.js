@@ -22,9 +22,7 @@ async function init() {
   styleTable();
 }
 
-
-
-/* 
+/*
  * Fetch combinations from server api
  */
 async function fetchCombinations() {
@@ -32,19 +30,18 @@ async function fetchCombinations() {
     const res = await fetch("http://localhost:3000/api/combinations/");
     const data = await res.json();
     return data;
-  } catch(e) {
-    console.log(e);
+  } catch (e) {
+    console.log("Error fetching: ", e);
   }
 }
 
-
-/* 
+/*
  * Create tabs for combination control
  * according to fetched combinations data
  */
 function createTabs() {
   let i = 1;
-  for(comb of combinations) {
+  for (let comb of combinations) {
     const tab = document.createElement("button");
     tab.classList.add("tab-selector");
     i === 1 && tab.classList.add("selected");
@@ -53,11 +50,9 @@ function createTabs() {
     tabs.append(tab);
     i++;
   }
-
 }
 
-
-/* 
+/*
  * Tabs control
  * Switches between different combinations
  */
@@ -67,52 +62,53 @@ tabs.addEventListener("click", (e) => {
   console.log(combIndex, combination);
   displayCombination();
   styleTable();
-  for(tab of tabs.children) {
+  for (let tab of tabs.children) {
     tab.classList.remove("selected");
   }
   e.target.classList.add("selected");
-})
+});
 
-
-/* 
-* Populate combination display
-*/
+/*
+ * Populate combination display
+ */
 function displayCombination() {
   let i = 0;
-  for(number of mainCombDisplay) {
+  for (let number of mainCombDisplay) {
     number.innerText = combination.mainNums[i] || "";
     i++;
   }
   i = 0;
-  for(number of euroCombDisplay) {
+  for (let number of euroCombDisplay) {
     number.innerText = combination.euroNums[i] || "";
     i++;
   }
   combDisplay.classList.remove("editing");
   info.innerText = "";
-  if(combination.isEdited) {
+  if (combination.isEdited) {
     combDisplay.classList.add("editing");
-    if(combination.mainNums.length === 5 && combination.euroNums.length === 2) {
-      info.innerText = "Trebate spremiti novu kombinaciju"
+    if (
+      combination.mainNums.length === 5 &&
+      combination.euroNums.length === 2
+    ) {
+      info.innerText = "Trebate spremiti novu kombinaciju";
     }
   }
 }
 
-
-/* 
+/*
  * Style numbers in table according to combination
  */
-function styleTable() {  
+function styleTable() {
   styleNums(mainNumbers, combination.mainNums, 5);
   styleNums(euroNumbers, combination.euroNums, 2);
 
   function styleNums(tabNums, nums, n) {
-    for (number of tabNums) {
+    for (let number of tabNums) {
       number.classList.remove("selected");
-      for (num of nums) {
+      for (let num of nums) {
         if (parseInt(number.innerText) === num) {
           number.classList.add("selected");
-          if(nums.length === n) {
+          if (nums.length === n) {
             number.classList.add("success");
           } else {
             number.classList.remove("success");
@@ -123,35 +119,33 @@ function styleTable() {
   }
 }
 
-
-/* 
+/*
  * Triggers adding or deleting of numbers from combination
  */
 numbers.addEventListener("click", (e) => {
   const selectedNum = parseInt(e.target.innerText);
-  if(e.target.closest(".column.main")) {
+  if (e.target.closest(".column.main")) {
     addNumber(selectedNum, "mainNums");
-  } else if(e.target.closest(".column.euro")) {
+  } else if (e.target.closest(".column.euro")) {
     addNumber(selectedNum, "euroNums");
   }
   displayCombination();
   styleTable();
-})
+});
 
-
-/* 
+/*
  * Add or delete number from combination
  */
 function addNumber(num, select) {
-  select === "mainNums" ? length = 5 : length = 2;
+  select === "mainNums" ? (length = 5) : (length = 2);
   // deletes number if it is present
-  if(combination[select].includes(num)) {
+  if (combination[select].includes(num)) {
     const index = combination[select].indexOf(num);
     console.log("deleted: ", combination[select].splice(index, 1));
-  // adds number if there is room
+    // adds number if there is room
   } else if (combination[select].length < length) {
     combination[select].push(num);
-    combination[select].sort((a, b) => a < b ? -1 : 1);
+    combination[select].sort((a, b) => (a < b ? -1 : 1));
     console.log("added: ", num);
   } else {
     console.log("cant add or delete number");
@@ -160,20 +154,19 @@ function addNumber(num, select) {
   combination.isEdited = true;
 }
 
-
-/* 
- * Changes combination or adds new if first time 
+/*
+ * Changes combination or adds new if first time
  * according to selected numbers
  * and posts changes to server
  */
 changeBtn.addEventListener("click", async () => {
-  if(combination.mainNums.length === 5 && combination.euroNums.length === 2) {
+  if (combination.mainNums.length === 5 && combination.euroNums.length === 2) {
     combinations[combIndex] = combination;
     combination.isEdited = false;
     displayCombination();
     styleTable();
     const data = await postCombination();
-    if(data) {
+    if (data) {
       combDisplay.classList.add("successful");
       setTimeout(() => combDisplay.classList.remove("successful"), 3000);
       info.innerText = "Kombinacija uspješno spremljena";
@@ -184,48 +177,33 @@ changeBtn.addEventListener("click", async () => {
       }, 3000);
     } else {
       info.innerText = "Something went wrong";
-    }    
+    }
   } else {
     info.innerText = "Kombinacije nisu potpune";
-  }  
-})
+  }
+});
 
-/* 
+/*
  * Post combination to server
  */
 async function postCombination() {
   try {
-    const res = await fetch("http://localhost:3000/api/combinations/", 
-      {
-        method: "POST",
-        headers: {
-          'Accept': 'application/json',
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(combination)
-      });
+    const res = await fetch("http://localhost:3000/api/combinations/", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(combination),
+    });
     const data = await res.json();
     return data;
-  } catch(e) {
+  } catch (e) {
     console.log(e);
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* 
+/*
  * Combination object constructor
  */
 // function Combination(mainNums, euroNums, type) {
