@@ -177,7 +177,7 @@ nav li:hover {
 }
 
 /**************** Combinations *********************/
-.combinations-container {
+.container {
   width: 100%;
   min-width: 300px;
   max-width: 400px;
@@ -267,7 +267,7 @@ button.tab-selector {
   background-color: var(--celadon-blue);
 }
 
-.numbers-table {
+#numbers-table {
   display: flex;
   padding: 10px;
   background-color: var(--powder-blue);
