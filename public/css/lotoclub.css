@@ -4,7 +4,7 @@
   --powder-blue: #a8dadcff;
   --celadon-blue: #457b9dff;
   --prussian-blue: #1d3557ff;
-  --success-green: rgb(28, 100, 56);
+  --success-green: #3baf2c;
 }
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,100&display=swap");
@@ -162,18 +162,26 @@ nav ul {
   margin-top: 1rem;
 }
 
-nav li {
+nav a {
   margin: 8px 0;
   font-size: 1.3rem;
   transition: 0.4s;
 }
 
-nav li:hover {
+nav a:hover {
   padding-left: 5px;
 }
 
-.active {
+nav a:active {
   color: var(--celadon-blue);
+}
+
+nav a.active {
+  color: var(--celadon-blue);
+}
+
+nav a.active:hover {
+  padding-left: 0;
 }
 
 /**************** Combinations *********************/
@@ -239,7 +247,8 @@ button.tab-selector {
 }
 
 .tab-selector.selected {
-  background-color: var(--powder-blue);
+  background-color: var(--honeydew);
+  color: var(--prussian-blue);
 }
 
 #info {
@@ -259,7 +268,7 @@ button.tab-selector {
 .tab {
   padding: 5px;
   border-radius: 0 0 5px 5px;
-  background-color: var(--powder-blue);
+  background-color: var(--honeydew);
 }
 
 .tab .combination-numbers {
@@ -267,10 +276,11 @@ button.tab-selector {
   background-color: var(--celadon-blue);
 }
 
+/*********** Table **************************/
 #numbers-table {
   display: flex;
   padding: 10px;
-  background-color: var(--powder-blue);
+  background-color: var(--honeydew);
 }
 
 .column {
@@ -281,12 +291,27 @@ button.tab-selector {
   margin-left: 10px;
 }
 
-.number.selected {
-  color: var(--imperial-red);
-  background-color: var(--powder-blue);
+#numbers-table .number {
+  border: 1px solid var(--honeydew);
+  border-radius: 4px;
+  background-color: #dddddd;
+  /* background-color: var(--honeydew); */
+  transition: 0.2s;
 }
 
-.number.selected.success {
+#numbers-table .number:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+#numbers-table .number.selected {
+  /* border: 1px solid var(--prussian-blue); */
+  color: var(--imperial-red);
+  /* background-color: var(--powder-blue); */
+}
+
+#numbers-table .number.selected.success {
+  border: 1px solid var(--success-green);
   color: var(--success-green);
-  background-color: var(--powder-blue);
+  /* background-color: var(--powder-blue); */
 }

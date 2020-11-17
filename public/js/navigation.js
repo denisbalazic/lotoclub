@@ -3,33 +3,23 @@ const closeNav = document.querySelector("#close-nav");
 const navBar = document.querySelector("nav");
 const links = navBar.querySelectorAll("a");
 
-
-
-/* 
+/*
  * Toggle navigation sidebar
  */
 navBtn.addEventListener("click", () => {
   navBar.classList.remove("hidden");
+  for (const link of document.links) {
+    if (link.href === document.URL) {
+      link.className = "active";
+    }
+  }
 });
 
 closeNav.addEventListener("click", () => {
   navBar.classList.add("hidden");
 });
 
-/* 
- * Styles selected option in navbar
- */
-navBar.addEventListener("click", (e) => {
-  e.preventDefault();
-  for(link of links) {
-    link.classList.remove("active");
-  }
-  e.target.classList.add("active");
-});
-
-
-
-/* 
+/*
  * Tabs control
  * DEPRECATED and left commented for reuse purposes
  */
