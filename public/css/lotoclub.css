@@ -205,14 +205,6 @@ nav a.active:hover {
   display: flex;
 }
 
-.combination-numbers.editing {
-  border: 2px solid var(--imperial-red);
-}
-
-.combination-numbers.successful {
-  border: 2px solid var(--success-green);
-}
-
 .number {
   flex: 1 100px;
   min-height: 2.2rem;
@@ -262,6 +254,14 @@ nav a.active:hover {
   background-color: var(--celadon-blue);
 }
 
+.tab .combination-numbers.editing {
+  border: 2px solid var(--imperial-red);
+}
+
+.tab .combination-numbers.successful {
+  border: 2px solid var(--success-green);
+}
+
 #info {
   height: 1rem;
   font-size: 0.8rem;
@@ -270,10 +270,6 @@ nav a.active:hover {
 
 #info.success {
   color: var(--success-green);
-}
-
-#info.hidden {
-  display: none;
 }
 
 /*********** Table **************************/
@@ -295,7 +291,6 @@ nav a.active:hover {
   border: 1px solid var(--honeydew);
   border-radius: 4px;
   background-color: #dddddd;
-  /* background-color: var(--honeydew); */
   transition: 0.2s;
 }
 
@@ -305,9 +300,7 @@ nav a.active:hover {
 }
 
 #numbers-table .number.selected {
-  /* border: 1px solid var(--prussian-blue); */
   color: var(--imperial-red);
-  /* background-color: var(--powder-blue); */
 }
 
 #numbers-table .number.selected.success {
