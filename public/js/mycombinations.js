@@ -1,4 +1,4 @@
-const tabs = document.querySelector(".tab-names");
+const tabSelectors = document.querySelector(".tab-selectors");
 const combDisplay = document.querySelector(".combination-numbers");
 const mainCombDisplay = document.querySelectorAll(".combination-numbers .main");
 const euroCombDisplay = document.querySelectorAll(".combination-numbers .euro");
@@ -17,7 +17,7 @@ init();
 async function init() {
   combinations = await fetchCombinations();
   combination = combinations[0];
-  createTabs();
+  createTabSelectors();
   displayCombination();
   styleTable();
 }
@@ -36,10 +36,10 @@ async function fetchCombinations() {
 }
 
 /*
- * Create tabs for combination control
+ * Create tabSelectors for combination control
  * according to fetched combinations data
  */
-function createTabs() {
+function createTabSelectors() {
   let i = 1;
   for (let comb of combinations) {
     const tab = document.createElement("button");
@@ -47,7 +47,7 @@ function createTabs() {
     i === 1 && tab.classList.add("selected");
     tab.id = "comb-" + i.toString();
     tab.innerText = comb.name;
-    tabs.append(tab);
+    tabSelectors.append(tab);
     i++;
   }
 }
@@ -56,13 +56,13 @@ function createTabs() {
  * Tabs control
  * Switches between different combinations
  */
-tabs.addEventListener("click", (e) => {
+tabSelectors.addEventListener("click", (e) => {
   combIndex = parseInt(e.target.id.slice(-1)) - 1;
   combination = combinations[combIndex];
   console.log(combIndex, combination);
   displayCombination();
   styleTable();
-  for (let tab of tabs.children) {
+  for (let tab of tabSelectors.children) {
     tab.classList.remove("selected");
   }
   e.target.classList.add("selected");
