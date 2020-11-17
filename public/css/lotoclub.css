@@ -295,7 +295,6 @@ button.tab-selector {
   border: 1px solid var(--honeydew);
   border-radius: 4px;
   background-color: #dddddd;
-  /* background-color: var(--honeydew); */
   transition: 0.2s;
 }
 
@@ -305,9 +304,7 @@ button.tab-selector {
 }
 
 #numbers-table .number.selected {
-  /* border: 1px solid var(--prussian-blue); */
   color: var(--imperial-red);
-  /* background-color: var(--powder-blue); */
 }
 
 #numbers-table .number.selected.success {
