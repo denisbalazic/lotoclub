@@ -203,7 +203,6 @@ nav a.active:hover {
 
 .combination-numbers {
   display: flex;
-  border: 2px solid var(--celadon-blue);
 }
 
 .combination-numbers.editing {
@@ -232,12 +231,12 @@ nav a.active:hover {
 }
 
 /********** MyCombinations ********************/
-.tab-names {
+.tab-selectors {
   display: flex;
   justify-content: space-around;
 }
 
-button.tab-selector {
+.tab-selector {
   flex: 1 100px;
   border: none;
   border-radius: 5px 5px 0 0;
@@ -249,6 +248,18 @@ button.tab-selector {
 .tab-selector.selected {
   background-color: var(--honeydew);
   color: var(--prussian-blue);
+}
+
+.tab {
+  padding: 5px;
+  border-radius: 0 0 5px 5px;
+  background-color: var(--honeydew);
+}
+
+.tab .combination-numbers {
+  border: 2px solid var(--celadon-blue);
+  border-radius: 5px;
+  background-color: var(--celadon-blue);
 }
 
 #info {
@@ -263,17 +274,6 @@ button.tab-selector {
 
 #info.hidden {
   display: none;
-}
-
-.tab {
-  padding: 5px;
-  border-radius: 0 0 5px 5px;
-  background-color: var(--honeydew);
-}
-
-.tab .combination-numbers {
-  border-radius: 5px;
-  background-color: var(--celadon-blue);
 }
 
 /*********** Table **************************/
