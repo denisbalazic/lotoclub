@@ -201,7 +201,7 @@ nav a.active:hover {
   font-size: 0.8rem;
 }
 
-.combination-numbers {
+.combination-display {
   display: flex;
 }
 
@@ -242,23 +242,28 @@ nav a.active:hover {
   color: var(--prussian-blue);
 }
 
+button.tab-selector:hover {
+  background-color: var(--honeydew);
+  color: var(--prussian-blue);
+}
+
 .tab {
   padding: 5px;
   border-radius: 0 0 5px 5px;
   background-color: var(--honeydew);
 }
 
-.tab .combination-numbers {
+.tab .combination-display {
   border: 2px solid var(--celadon-blue);
   border-radius: 5px;
   background-color: var(--celadon-blue);
 }
 
-.tab .combination-numbers.editing {
+.tab .combination-display.editing {
   border: 2px solid var(--imperial-red);
 }
 
-.tab .combination-numbers.successful {
+.tab .combination-display.successful {
   border: 2px solid var(--success-green);
 }
 
@@ -279,11 +284,11 @@ nav a.active:hover {
   background-color: var(--honeydew);
 }
 
-.column {
+#numbers-table .column {
   flex-grow: 1;
 }
 
-.column.euro {
+#numbers-table .column.euro {
   margin-left: 10px;
 }
 

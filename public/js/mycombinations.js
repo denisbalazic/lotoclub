@@ -1,7 +1,7 @@
 const tabSelectors = document.querySelector(".tab-selectors");
-const combDisplay = document.querySelector(".combination-numbers");
-const mainCombDisplay = document.querySelectorAll(".combination-numbers .main");
-const euroCombDisplay = document.querySelectorAll(".combination-numbers .euro");
+const combDisplay = document.querySelector(".combination-display");
+const mainCombDisplay = document.querySelectorAll(".combination-display .main");
+const euroCombDisplay = document.querySelectorAll(".combination-display .euro");
 const mainNumbers = document.querySelectorAll("#numbers-table .main .number");
 const euroNumbers = document.querySelectorAll("#numbers-table .euro .number");
 const numbers = document.querySelector("#numbers-table");
@@ -160,9 +160,9 @@ function addNumber(num, select) {
 saveBtn.addEventListener("click", async () => {
   if (combination.mainNums.length === 5 && combination.euroNums.length === 2) {
     combinations[combIndex] = combination;
+    delete combination.isEdited;
     const data = await postCombination();
     if (data) {
-      combination.isEdited = false;
       displayCombination();
       styleTable();
       showMessage("Kombinacija uspješno spremljena", "success");
