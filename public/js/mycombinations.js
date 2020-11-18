@@ -41,7 +41,7 @@ async function fetchCombinations() {
  */
 function createTabSelectors() {
   let i = 1;
-  for (let comb of combinations) {
+  for (const comb of combinations) {
     const tab = document.createElement("button");
     tab.classList.add("tab-selector");
     i === 1 && tab.classList.add("selected");
@@ -59,10 +59,9 @@ function createTabSelectors() {
 tabSelectors.addEventListener("click", (e) => {
   combIndex = parseInt(e.target.id.slice(-1)) - 1;
   combination = combinations[combIndex];
-  console.log(combIndex, combination);
   displayCombination();
   styleTable();
-  for (let tab of tabSelectors.children) {
+  for (const tab of tabSelectors.children) {
     tab.classList.remove("selected");
   }
   e.target.classList.add("selected");
@@ -73,12 +72,12 @@ tabSelectors.addEventListener("click", (e) => {
  */
 function displayCombination() {
   let i = 0;
-  for (let number of mainCombDisplay) {
+  for (const number of mainCombDisplay) {
     number.innerText = combination.mainNums[i] || "";
     i++;
   }
   i = 0;
-  for (let number of euroCombDisplay) {
+  for (const number of euroCombDisplay) {
     number.innerText = combination.euroNums[i] || "";
     i++;
   }
@@ -146,7 +145,6 @@ function addNumber(num, select) {
   } else if (combination[select].length < length) {
     combination[select].push(num);
     combination[select].sort((a, b) => (a < b ? -1 : 1));
-    console.log("added: ", num);
   } else {
     console.log("cant add or delete number");
     return false;
@@ -162,24 +160,17 @@ function addNumber(num, select) {
 saveBtn.addEventListener("click", async () => {
   if (combination.mainNums.length === 5 && combination.euroNums.length === 2) {
     combinations[combIndex] = combination;
-    combination.isEdited = false;
-    displayCombination();
-    styleTable();
     const data = await postCombination();
     if (data) {
-      combDisplay.classList.add("successful");
-      setTimeout(() => combDisplay.classList.remove("successful"), 3000);
-      info.innerText = "Kombinacija uspješno spremljena";
-      info.classList.add("success");
-      setTimeout(() => {
-        info.innerText = "";
-        info.classList.remove("success");
-      }, 3000);
+      combination.isEdited = false;
+      displayCombination();
+      styleTable();
+      showMessage("Kombinacija uspješno spremljena", "success");
     } else {
-      info.innerText = "Something went wrong";
+      showMessage("Nešto je pošlo krivo :(", "warning");
     }
   } else {
-    info.innerText = "Kombinacije nisu potpune";
+    showMessage("Kombinacije nisu potpune", "warning");
   }
 });
 
@@ -200,6 +191,24 @@ async function postCombination() {
     return data;
   } catch (e) {
     console.log(e);
+  }
+}
+
+/*
+ * Display message
+ */
+function showMessage(message, type) {
+  info.innerText = message;
+  if (type === "warning") {
+    info.classList.remove("success");
+  } else if (type === "success") {
+    info.classList.add("success");
+    setTimeout(() => {
+      info.innerText = "";
+      info.classList.remove("success");
+    }, 3000);
+    combDisplay.classList.add("successful");
+    setTimeout(() => combDisplay.classList.remove("successful"), 3000);
   }
 }
 

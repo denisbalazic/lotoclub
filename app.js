@@ -6,7 +6,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 
-const combinations = [
+let combinations = [
   {
     mainNums: [2, 5, 19, 27, 36],
     euroNums: [1, 9],
@@ -36,7 +36,8 @@ app.get("/api/combinations", function (req, res) {
 });
 
 app.post("/api/combinations", function (req, res) {
-  res.status(201).json(req.body);
+  combinations = req.body;
+  res.status(201).json(combinations);
 });
 
 app.listen(process.env.PORT || 3000, function () {
