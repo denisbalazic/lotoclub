@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const combinationsRoutes = require("./routes/combinations");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 
+<<<<<<< HEAD
 let combinations = [
   {
     mainNums: [2, 5, 19, 27, 36],
@@ -26,20 +28,27 @@ let combinations = [
     name: "Posebna",
   },
 ];
+=======
+app.use("/api/combinations", combinationsRoutes);
+>>>>>>> routes
 
 app.get("/", function (req, res) {
   res.send(index);
 });
 
-app.get("/api/combinations", function (req, res) {
-  res.json(combinations);
+app.use("*", (req, res) => {
+  res.send("Invalid route, please create error page");
 });
 
+<<<<<<< HEAD
 app.post("/api/combinations", function (req, res) {
   combinations = req.body;
   res.status(201).json(combinations);
 });
 
 app.listen(process.env.PORT || 3000, function () {
+=======
+app.listen(process.env.PORT || 3000, () => {
+>>>>>>> routes
   console.log("Lotoclub has started");
 });
