@@ -16,7 +16,7 @@ init();
 
 async function init() {
   combinations = await fetchCombinations();
-  combination = combinations[0];
+  combination = combinations[0] || {};
   createTabSelectors();
   displayCombination();
   styleTable();
@@ -27,7 +27,7 @@ async function init() {
  */
 async function fetchCombinations() {
   try {
-    const res = await fetch("http://localhost:3000/api/combinations/");
+    const res = await fetch("http://localhost:3000/api/combinations/branko");
     const data = await res.json();
     return data;
   } catch (e) {
@@ -45,8 +45,8 @@ function createTabSelectors() {
     const tab = document.createElement("button");
     tab.classList.add("tab-selector");
     i === 1 && tab.classList.add("selected");
-    tab.id = "comb-" + i.toString();
-    tab.innerText = comb.name;
+    tab.id = comb.name;
+    tab.innerText = comb.name; // <--------------------- change to custom name "Glavna", "Dodatna" etc (switch)!!!!!!!!!
     tabSelectors.append(tab);
     i++;
   }
@@ -179,7 +179,7 @@ saveBtn.addEventListener("click", async () => {
  */
 async function postCombination() {
   try {
-    const res = await fetch("http://localhost:3000/api/combinations/", {
+    const res = await fetch("http://localhost:3000/api/combinations/branko", {
       method: "POST",
       headers: {
         Accept: "application/json",
