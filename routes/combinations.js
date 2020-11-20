@@ -4,7 +4,7 @@ const Combination = require("../models/combination");
 const User = require("../models/user");
 const Settings = require("../models/settings");
 
-//get all active combinations
+//get all active combinations per user
 router.get("/", async (req, res) => {
   try {
     const userCombinations = [];
@@ -52,7 +52,7 @@ router.put("/:username", async (req, res) => {
     });
     combination.mainNums = req.body.mainNums;
     combination.euroNums = req.body.euroNums;
-    combination.save();
+    await combination.save();
     res.status(200).json(combination);
   } catch (err) {
     res.status(500).send(err);
