@@ -39,19 +39,17 @@ router.put("/", async (req, res) => {
           newCombination = new Combination(lastComb.toObject());
           lastComb.isLast = false;
           await lastComb.save();
-          console.log("old comb");
         } else {
           newCombination = new Combination(emptyCombination);
           newCombination.username = user.username;
           newCombination.name = combName;
-          console.log("new comb");
         }
+        //next two lines are for cloning db entry
         newCombination._id = mongoose.Types.ObjectId();
         newCombination.isNew = true;
         newCombination.isActive = true;
         newCombination.draw = settings.draw;
         await newCombination.save();
-        console.log("save comb");
       }
     }
     res.status(200).send("ok");

@@ -198,7 +198,8 @@ nav a.active:hover {
 
 .combination-heading {
   padding: 0 5px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: bold;
 }
 
 .combination-display {
