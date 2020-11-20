@@ -16,7 +16,7 @@ init();
 
 async function init() {
   combinations = await fetchCombinations();
-  combination = combinations[0] || {};
+  combination = combinations[0];
   createTabSelectors();
   displayCombination();
   styleTable();
@@ -180,7 +180,7 @@ saveBtn.addEventListener("click", async () => {
 async function postCombination() {
   try {
     const res = await fetch("http://localhost:3000/api/combinations/branko", {
-      method: "POST",
+      method: "PUT",
       headers: {
         Accept: "application/json",
         "Content-type": "application/json",

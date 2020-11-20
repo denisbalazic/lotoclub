@@ -2,8 +2,9 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const combinationsRoutes = require("./routes/combinations");
 const settingsRoutes = require("./routes/settings");
+const usersRoutes = require("./routes/users");
+const combinationsRoutes = require("./routes/combinations");
 const cron = require("cron");
 const { databaseURL, port, secret, jwtSecret } = require("./config");
 const Settings = require("./models/settings");
@@ -28,15 +29,17 @@ mongoose
   });
 
 //Routes
-app.use("/api/combinations", combinationsRoutes);
+app.use("/api/users", usersRoutes);
 app.use("/api/settings", settingsRoutes);
+app.use("/api/combinations", combinationsRoutes);
 
 app.use("*", (req, res) => {
   res.send("Invalid route, please create error page");
 });
 
-const cronJob = new cron.CronJob("* * * * *", async () => {
-  console.log("5 minutes passed...");
+//Lock editing of combinations on Friday 9:00 AM
+const cronJob = new cron.CronJob("0 9 * * 5", async () => {
+  console.log("Editing blocked");
   await blockEditingCombinations();
 });
 cronJob.start();
