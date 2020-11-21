@@ -25,22 +25,16 @@ router.put("/", async (req, res) => {
           name: combName,
           isLast: true,
         });
-        //copy last played combination or create new blank,
-        //and mark them active
-        let newCombination;
+        //create new combination and populate it with last played numbers if such combination exists
+        let newCombination = new Combination();
         if (lastComb) {
-          newCombination = new Combination(lastComb.toObject());
+          newCombination.mainNums = lastComb.mainNums;
+          newCombination.euroNums = lastComb.euroNums;
           lastComb.isLast = false;
           await lastComb.save();
-        } else {
-          newCombination = new Combination();
-          newCombination.username = user.username;
-          newCombination.name = combName;
         }
-        //next two lines are for cloning db entry
-        newCombination._id = mongoose.Types.ObjectId();
-        newCombination.isNew = true;
-        newCombination.isActive = true;
+        newCombination.username = user.username;
+        newCombination.name = combName;
         newCombination.draw = settings.draw;
         await newCombination.save();
       }

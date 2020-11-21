@@ -34,8 +34,6 @@ router.get("/:username", async (req, res) => {
       username: req.params.username,
       isActive: true,
     });
-    const testComb = await new Combination();
-    console.log(testComb);
     res.json(combinations);
   } catch (err) {
     console.log(err);

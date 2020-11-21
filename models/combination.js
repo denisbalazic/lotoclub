@@ -16,7 +16,10 @@ const combinationSchema = new mongoose.Schema({
     type: [{ type: Number, min: 1, max: 10 }],
   },
   draw: Number,
-  isActive: Boolean,
+  isActive: {
+    type: Boolean,
+    default: true,
+  },
   isLast: {
     type: Boolean,
     default: true,
