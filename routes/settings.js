@@ -5,13 +5,6 @@ const User = require("../models/user");
 const Settings = require("../models/settings");
 const Combination = require("../models/combination");
 
-const emptyCombination = {
-  mainNums: [],
-  euroNums: [],
-  isLast: true,
-  isWinning: false,
-};
-
 router.put("/", async (req, res) => {
   try {
     //update settings with array of combination names to be played in next draw
@@ -40,7 +33,7 @@ router.put("/", async (req, res) => {
           lastComb.isLast = false;
           await lastComb.save();
         } else {
-          newCombination = new Combination(emptyCombination);
+          newCombination = new Combination();
           newCombination.username = user.username;
           newCombination.name = combName;
         }
