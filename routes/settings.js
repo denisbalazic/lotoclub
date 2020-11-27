@@ -9,11 +9,7 @@ router.put("/", async (req, res) => {
   try {
     //update settings with array of combination names to be played in next draw
     const activeCombNames = req.body.activeCombs;
-    const settings = await Settings.findOne({});
-    settings.draw += 1;
-    settings.canEdit = true;
-    settings.activeCombs = activeCombNames;
-    settings.save();
+    const settings = await Settings.resetNewDraw(activeCombNames);
     //make active combinations inactive
     await Combination.updateMany({ isActive: true }, { isActive: false });
     //find last played combinations for every user

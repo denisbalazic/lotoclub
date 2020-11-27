@@ -4,6 +4,8 @@ const email = document.querySelector("#email");
 const password = document.querySelector("#password");
 const password2 = document.querySelector("#password2");
 const passcode = document.querySelector("#passcode");
+const submitBtn = document.querySelector("#submit-btn");
+let isValid = true;
 
 /*
  * Shows error message and style if input is wrong or missing
@@ -24,7 +26,7 @@ function showSuccess(input) {
 }
 
 /*
- * Validates input fields
+ * Validates required input fields
  */
 function checkRequired(inputs) {
   for (const input of inputs) {
@@ -36,6 +38,9 @@ function checkRequired(inputs) {
       showSuccess(input);
     }
   }
+  return !inputs.some((input) => {
+    input.value.trim() === "";
+  });
 }
 
 /*
@@ -45,8 +50,10 @@ function checkEmail(email) {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   if (re.test(String(email.value).toLowerCase())) {
     showSuccess(email);
+    return true;
   } else {
     showError(email, "Email is not valid");
+    return false;
   }
 }
 
@@ -67,11 +74,15 @@ function checkLength(input, min, max) {
       input,
       `${getInputName(input)} must be at least ${min} characters long`
     );
+    return false;
   } else if (input.value.length > max) {
     showError(
       input,
       `${getInputName(input)} must be less then ${max} characters long`
     );
+    return false;
+  } else {
+    return true;
   }
 }
 
@@ -81,17 +92,46 @@ function checkLength(input, min, max) {
 function checkPasswordsMatch(pass1, pass2) {
   if (pass1.value !== pass2.value) {
     showError(pass2, "Passwords do not match");
+    return false;
+  } else {
+    return true;
   }
 }
 
 /*
  * Event listeners
  */
-form.addEventListener("submit", (e) => {
+form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  checkRequired([username, email, password, password2, passcode]);
-  checkLength(username, 3, 15);
-  checkLength(password, 6, 15);
-  checkEmail(email);
-  checkPasswordsMatch(password, password2);
+  const ch1 = checkRequired([username, email, password, password2, passcode]);
+  const ch2 = checkLength(username, 3, 16);
+  const ch3 = checkLength(password, 6, 19);
+  const ch4 = checkEmail(email);
+  const ch5 = checkPasswordsMatch(password, password2);
+  if (ch1 && ch2 && ch3 && ch4 && ch5) {
+    const createdUser = await sendFormData();
+    console.log(createdUser);
+  }
 });
+
+async function sendFormData() {
+  try {
+    const userData = {
+      username: username.value,
+      password: password.value,
+      email: email.value,
+    };
+    const res = await fetch("http://localhost:3000/api/users", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
+    const data = await res.json();
+    return data;
+  } catch (e) {
+    console.log(e);
+  }
+}
