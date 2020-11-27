@@ -17,7 +17,6 @@ function wrapAsync(fn) {
 router.get(
   "/",
   wrapAsync(async (req, res, next) => {
-    console.log(userService);
     const users = await userService.getUsers();
     if (!users) {
       throw new AppError(500, 1, "Something went wrong fetching users from db");
@@ -41,8 +40,7 @@ router.post(
   "/",
   wrapAsync(async (req, res, next) => {
     const createdUser = await userService.createUser(req.body);
-    console.log("Route", createdUser);
-    res.json(createdUser);
+    res.status(201).json(createdUser);
   })
 );
 
