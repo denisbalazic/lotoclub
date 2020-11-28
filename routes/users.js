@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const userService = require("../services/userService");
 const catchAsync = require("../helpers/catchAsync");
+const joi = require("../middleware/joiValidation.js");
 const AppError = require("../helpers/AppError");
 
 router.get(
@@ -28,6 +29,7 @@ router.get(
 
 router.post(
   "/",
+  joi.validateUser,
   catchAsync(async (req, res, next) => {
     const createdUser = await userService.createUser(req.body);
     res.status(201).json(createdUser);
@@ -36,6 +38,7 @@ router.post(
 
 router.put(
   "/:id",
+  joi.validateUserUpdate,
   catchAsync(async (req, res, next) => {
     const updatedUser = await userService.updateUser(req.params.id, req.body);
     res.json(updatedUser);

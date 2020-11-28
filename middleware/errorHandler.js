@@ -1,4 +1,5 @@
 const AppError = require("../helpers/AppError");
+const ApiResponse = require("../helpers/ApiResponse");
 const errorHandler = {};
 
 /**
@@ -6,14 +7,23 @@ const errorHandler = {};
  * TODO: Handle validation and duplicate key errors
  */
 errorHandler.proccessError = function (err, req, res, next) {
-  if (err.name == "ValidationError") {
-    console.log("VALIDATION ERROR FOUND");
+  //Errors from mongoose
+  if (err.name === "ValidationError") {
+    err.code = 2;
+    err.status = 400;
   }
+  //Errors from mongoDB
   if (err.code === 11000) {
-    console.log(`${err.keyValue} already exists in db`);
+    err.code = 3;
+    err.status = 400;
+    const field = Object.keys(err.keyValue)[0];
+    const value = err.keyValue[field];
+    err.message = `"${field}: ${value}" already exists in db`;
   }
-  const { status = 500, code = 0, message = "Unclassified error" } = err;
-  res.status(status).send(`message: ${message}, code: ${code.toString()}`);
+  const { status = 500, code = 0, message = "Something went wrong" } = err;
+  const appError = new AppError(status, code, message);
+  const response = new ApiResponse(false, null, appError);
+  res.status(status).json(response);
   console.log(err);
 };
 
