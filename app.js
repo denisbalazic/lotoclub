@@ -10,6 +10,7 @@ const errorHandler = require("./middleware/errorHandler");
 const cron = require("cron");
 const { databaseURL, port, secret, jwtSecret } = require("./config");
 const cronJob = require("./helpers/cronTimer");
+const AppError = require("./helpers/AppError");
 
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -42,16 +43,16 @@ app.use("/api/settings", settingsRoutes);
 app.use("/api/combinations", combinationsRoutes);
 
 /**
+ * Route not found
+ */
+app.use("*", (req, res, next) => {
+  next(new AppError(404, 4, "Route doesnt exist, please create 404 page"));
+});
+
+/**
  * Error-handling middleware
  */
 app.use(errorHandler.proccessError);
-
-/**
- * Route not found
- */
-app.use("*", (req, res) => {
-  res.status(404).send("Route doesnt exist, please create 404 page");
-});
 
 /**
  * Reccurent blocking of editing combinations on Friday 9:00AM
