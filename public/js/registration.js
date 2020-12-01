@@ -109,8 +109,12 @@ form.addEventListener("submit", async (e) => {
   const ch4 = checkEmail(email);
   const ch5 = checkPasswordsMatch(password, password2);
   if (ch1 && ch2 && ch3 && ch4 && ch5) {
-    const createdUser = await sendFormData();
-    console.log(createdUser);
+    const response = await sendFormData();
+    if (response.success) {
+      window.location.pathname = "/combinations";
+    } else {
+      //showError for given situation (ex. username already exists, etc.)
+    }
   }
 });
 

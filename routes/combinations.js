@@ -4,8 +4,11 @@ const Combination = require("../models/combination");
 const User = require("../models/user");
 const Settings = require("../models/settings");
 const joi = require("../middleware/joiValidation");
+// const expressSession = require("express-session");
 const catchAsync = require("../helpers/catchAsync");
 const AppError = require("../helpers/AppError");
+const auth = require("../middleware/auth");
+const ApiResponse = require("../helpers/ApiResponse");
 
 /**
  * Get all active combinations
@@ -13,6 +16,7 @@ const AppError = require("../helpers/AppError");
  */
 router.get(
   "/",
+  auth.authenticate,
   catchAsync(async (req, res) => {
     const userCombinations = [];
     const users = await User.find({});
@@ -27,7 +31,8 @@ router.get(
       };
       userCombinations.push(userCombination);
     }
-    res.status(200).json(userCombinations);
+    const response = new ApiResponse(true, userCombinations, null);
+    res.status(200).json(response);
   })
 );
 

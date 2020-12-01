@@ -1,7 +1,11 @@
 const container = document.querySelector(".container");
 
 async function init() {
-  const userCombinations = await fetchCombinations();
+  const response = await fetchCombinations();
+  if (!response.success && response.error) {
+    handleError(response.error);
+  }
+  const userCombinations = response.result;
   //Create div with heading for every user
   for (const userCombination of userCombinations) {
     let hasCombinations = false;
@@ -25,12 +29,26 @@ async function init() {
 
 //fetch array of combinations associated by user
 async function fetchCombinations() {
+  const token =
+    "yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YjMxNDNiODM2MjAzOThhOGFjNGUiLCJpYXQiOjE2MDY3NDY2MDV9.40es9WvXQkpOYQxFHYolaAOi_jj8k4xxty3Lg2dCHhY";
   try {
-    const res = await fetch("http://localhost:3000/api/combinations/");
+    const res = await fetch("http://localhost:3000/api/combinations/", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     const data = await res.json();
     return data;
   } catch (err) {
-    console.log(err);
+    console.dir(err);
+  }
+}
+
+function handleError(err) {
+  if (err.code === 9) {
+    window.location.pathname = "/login";
+  } else {
+    window.location.pathname = "/retwetfdgdk";
   }
 }
 

@@ -2,8 +2,50 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const userService = require("../services/userService");
 const catchAsync = require("../helpers/catchAsync");
-const joi = require("../middleware/joiValidation.js");
+const joi = require("../middleware/joiValidation");
+const auth = require("../middleware/auth");
 const AppError = require("../helpers/AppError");
+const ApiResponse = require("../helpers/ApiResponse");
+
+/**
+ * Register, create new user
+ */
+router.post(
+  "/",
+  joi.validateUser,
+  catchAsync(async (req, res, next) => {
+    const user = await userService.createUser(req.body);
+    const token = await userService.generateAuthToken(user);
+    const response = new ApiResponse(true, { user, token }, null);
+    res.status(201).json(response);
+  })
+);
+
+/*
+ * User login
+ */
+router.post(
+  "/login",
+  catchAsync(async function (req, res) {
+    const user = await userService.login(req.body.username, req.body.password);
+    const token = await userService.generateAuthToken(user);
+    const response = new ApiResponse(true, { user, token }, null);
+    res.cookie("token", token, { httpOnly: true });
+    res.status(200).json(response);
+  })
+);
+
+router.get(
+  "/me",
+  auth.authenticate,
+  catchAsync(async (req, res, next) => {
+    const user = await userService.getUser(req.user.id);
+    if (!user) {
+      throw new AppError(404, 1, "User not found");
+    }
+    res.status(200).json(user);
+  })
+);
 
 router.get(
   "/",
@@ -24,15 +66,6 @@ router.get(
       throw new AppError(404, 1, "User not found");
     }
     res.status(200).json(user);
-  })
-);
-
-router.post(
-  "/",
-  joi.validateUser,
-  catchAsync(async (req, res, next) => {
-    const createdUser = await userService.createUser(req.body);
-    res.status(201).json(createdUser);
   })
 );
 

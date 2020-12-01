@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -13,9 +14,9 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      minlength: 6,
-      maxlength: 19,
-      trim: true,
+      // minlength: 6,
+      // maxlength: 19,
+      // trim: true,
     },
     email: {
       type: String,
@@ -41,6 +42,19 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+/**
+ * Hashing password before saving
+ * !need to create and update with .save() in mongoose
+ */
+userSchema.pre("save", async function (next) {
+  const user = this;
+  if (user.isModified("password")) {
+    //bcrypt.hash creates salt and hashes
+    user.password = await bcrypt.hash(user.password, 12);
+  }
+  next();
+});
 
 /**
  * Making sure that sensitive data is never sent to client

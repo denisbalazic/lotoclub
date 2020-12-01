@@ -3,15 +3,18 @@ const app = express();
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
-const settingsRoutes = require("./routes/settings");
+const cookieParser = require("cookie-parser");
+const pageRoutes = require("./routes/pages");
 const usersRoutes = require("./routes/users");
+const settingsRoutes = require("./routes/settings");
 const combinationsRoutes = require("./routes/combinations");
 const errorHandler = require("./middleware/errorHandler");
-const cron = require("cron");
-const { databaseURL, port, secret, jwtSecret } = require("./config");
 const cronJob = require("./helpers/cronTimer");
+const { databaseURL, port, secret, jwtSecret } = require("./config");
 const AppError = require("./helpers/AppError");
 
+app.set("view engine", "ejs");
+app.use(cookieParser());
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.json()); // <-------------------what is this????
@@ -36,6 +39,11 @@ mongoose
   });
 
 /**
+ * Static pages routes
+ */
+app.use("/", pageRoutes);
+
+/**
  * Api routes
  */
 app.use("/api/users", usersRoutes);
@@ -46,6 +54,7 @@ app.use("/api/combinations", combinationsRoutes);
  * Route not found
  */
 app.use("*", (req, res, next) => {
+  console.log(req.path);
   next(new AppError(404, 4, "Route doesnt exist, please create 404 page"));
 });
 
