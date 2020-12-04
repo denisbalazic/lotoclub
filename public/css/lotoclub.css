@@ -25,9 +25,56 @@ header {
   color: white;
 }
 
+header #menu ul {
+  display: flex;
+}
+
 i {
   margin: 0 5px;
   font-size: 1.5rem;
+}
+
+/**************** Navbar ***********************/
+nav {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 100%;
+  padding: 10px;
+  background-color: var(--prussian-blue);
+  color: white;
+  transition: 0.4s;
+}
+
+nav.hidden {
+  right: -200px;
+}
+
+nav ul {
+  margin-top: 1rem;
+}
+
+nav a {
+  margin: 8px 0;
+  font-size: 1.3rem;
+  transition: 0.4s;
+}
+
+nav a:hover {
+  padding-left: 5px;
+}
+
+nav a:active {
+  color: var(--celadon-blue);
+}
+
+nav a.active {
+  color: var(--celadon-blue);
+}
+
+nav a.active:hover {
+  padding-left: 0;
 }
 
 main {
@@ -37,10 +84,7 @@ main {
   align-items: center;
   min-height: calc(100vh - 3rem);
   padding: 10px;
-  background: linear-gradient(
-      rgba(255, 255, 255, 0.7),
-      rgba(255, 255, 255, 0.7)
-    ),
+  background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
     url("https://img.maximummedia.ie/joe_ie/eyJkYXRhIjoie1widXJsXCI6XCJodHRwOlxcXC9cXFwvbWVkaWEtam9lLm1heGltdW1tZWRpYS5pZS5zMy5hbWF6b25hd3MuY29tXFxcL3dwLWNvbnRlbnRcXFwvdXBsb2Fkc1xcXC8yMDE5XFxcLzEwXFxcLzMxMTQ0MDM5XFxcL2xvdHRlcnkuanBnXCIsXCJ3aWR0aFwiOjY0MCxcImhlaWdodFwiOjM2MCxcImRlZmF1bHRcIjpcImh0dHBzOlxcXC9cXFwvd3d3LmpvZS5pZVxcXC9hc3NldHNcXFwvaW1hZ2VzXFxcL2pvZVxcXC9uby1pbWFnZS5wbmc_aWQ9NDNiY2E5ZGU3ZWIyNjk3MzdhMGZcIixcIm9wdGlvbnNcIjpbXX0iLCJoYXNoIjoiNTJlNjgyMzg5NmRmZTNiZTJmMTJmNGQyYTMzMjg4YzI4NDY2OWQzNyJ9/lottery.jpg");
   background-size: cover;
 }
@@ -139,49 +183,6 @@ button {
 button:hover {
   background-color: var(--celadon-blue);
   color: white;
-}
-
-/**************** Navbar ***********************/
-nav {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 200px;
-  height: 100%;
-  padding: 10px;
-  background-color: var(--prussian-blue);
-  color: white;
-  transition: 0.4s;
-}
-
-nav.hidden {
-  right: -200px;
-}
-
-nav ul {
-  margin-top: 1rem;
-}
-
-nav a {
-  margin: 8px 0;
-  font-size: 1.3rem;
-  transition: 0.4s;
-}
-
-nav a:hover {
-  padding-left: 5px;
-}
-
-nav a:active {
-  color: var(--celadon-blue);
-}
-
-nav a.active {
-  color: var(--celadon-blue);
-}
-
-nav a.active:hover {
-  padding-left: 0;
 }
 
 /**************** Combinations *********************/
