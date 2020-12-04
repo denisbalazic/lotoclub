@@ -96,7 +96,6 @@ userService.deleteUser = async function (id) {
 userService.generateAuthToken = async function (user) {
   try {
     const token = jwt.sign({ _id: user._id.toString() }, jwtSecret);
-    console.log(token);
     user.tokens.push({ token });
     await user.save();
     return token;

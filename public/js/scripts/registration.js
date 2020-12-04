@@ -1,3 +1,5 @@
+import { auth } from "./auth.js";
+
 const registration = {};
 
 registration.init = () => {
@@ -8,7 +10,6 @@ registration.init = () => {
   const password2 = document.querySelector("#password2");
   const passcode = document.querySelector("#passcode");
   const submitBtn = document.querySelector("#submit-btn");
-  let isValid = true;
 
   /*
    * Shows error message and style if input is wrong or missing
@@ -42,7 +43,7 @@ registration.init = () => {
       }
     }
     return !inputs.some((input) => {
-      input.value.trim() === "";
+      return input.value.trim() === "";
     });
   }
 
@@ -107,10 +108,18 @@ registration.init = () => {
     const ch5 = checkPasswordsMatch(password, password2);
     if (ch1 && ch2 && ch3 && ch4 && ch5) {
       const response = await sendFormData();
+      console.log(response);
       if (response.success) {
-        window.location.pathname = "/combinations";
+        auth.token = response.result.token;
+        window.location.hash = "combinations";
       } else {
-        //showError for given situation (ex. username already exists, etc.)
+        const field = response.error.message.split(":")[0];
+        if (field === "email") {
+          showError(email, "There is user with this email");
+        }
+        if (field === "username") {
+          showError(username, "Username is taken");
+        }
       }
     }
   });

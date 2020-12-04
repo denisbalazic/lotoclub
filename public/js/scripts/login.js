@@ -1,7 +1,6 @@
-const login = {};
+import { auth } from "./auth.js";
 
-login.token = "";
-login.whatev = "whatev: ";
+const login = {};
 
 login.init = function () {
   const username = document.querySelector("#username");
@@ -13,8 +12,7 @@ login.init = function () {
     e.preventDefault();
     const response = await sendFormData();
     if (response.success) {
-      this.token = response.result.token;
-      console.log(this.whatev, this.token);
+      auth.token = response.result.token;
       window.location.hash = "combinations";
     } else {
       window.location.hash = "login";
