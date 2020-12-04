@@ -47,7 +47,6 @@ router.get(
       username: req.user.username,
       isActive: true,
     });
-    console.log(`User ${req.user.username} is authenticated with token: ${req.user.token}`);
     res.json(combinations);
   })
 );
