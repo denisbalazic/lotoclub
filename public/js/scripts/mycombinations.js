@@ -1,3 +1,5 @@
+import { auth } from "./auth.js";
+
 const mycombinations = {};
 
 mycombinations.init = () => {
@@ -30,11 +32,16 @@ mycombinations.init = () => {
    */
   async function fetchCombinations() {
     try {
-      const res = await fetch("http://localhost:3000/api/combinations/branko");
+      console.log("Token from mycombinations: ", auth.token);
+      const res = await fetch("http://localhost:3000/api/combinations/me", {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
       const data = await res.json();
       return data;
-    } catch (e) {
-      console.log("Error fetching: ", e);
+    } catch (err) {
+      console.dir(err);
     }
   }
 

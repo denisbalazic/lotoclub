@@ -26,11 +26,13 @@ const findComponentByPath = (path, routes) => {
 };
 
 const router = () => {
-  console.log(auth.token);
   // Find the page based on the current path
   const path = parseLocation();
-  // If there's no matching route, get the "Error" page
   const { page = errorPage } = findComponentByPath(path, routes) || {};
+  if (page.isProtected && !auth.token) {
+    //TODO: Need to provide message that user is not logged in
+    window.location.hash = "login";
+  }
   // Render the page in the "app" placeholder
   document.getElementById("app").innerHTML = page.render();
   if (page.init) {

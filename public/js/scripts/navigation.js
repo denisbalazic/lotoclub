@@ -1,3 +1,5 @@
+import { auth } from "./auth.js";
+
 const navigation = {};
 
 navigation.init = () => {
@@ -5,6 +7,7 @@ navigation.init = () => {
   const closeNav = document.querySelector("#close-nav");
   const navBar = document.querySelector("nav");
   const links = navBar.querySelectorAll("a");
+  const logoutBtn = navBar.querySelector("#logout-btn");
 
   /*
    * Toggle navigation sidebar
@@ -14,7 +17,6 @@ navigation.init = () => {
     for (const link of links) {
       link.classList.remove("active");
       if (link.href === document.URL) {
-        console.log(link.href);
         link.className = "active";
       }
     }
@@ -29,10 +31,38 @@ navigation.init = () => {
       navBar.classList.add("hidden");
     });
   }
-
   closeNav.addEventListener("click", () => {
     navBar.classList.add("hidden");
   });
+
+  /**
+   * Logout
+   */
+  logoutBtn.addEventListener("click", async () => {
+    const response = await logout();
+    if (response.success) {
+      auth.token = "";
+    }
+  });
+
+  /*
+   * Logout
+   */
+  async function logout() {
+    try {
+      console.log("Token from logout: ", auth.token);
+      const res = await fetch("http://localhost:3000/api/users/logout", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      console.dir(err);
+    }
+  }
 };
 
 export { navigation };

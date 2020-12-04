@@ -40,12 +40,14 @@ router.get(
  * Get active combinations for logged user
  */
 router.get(
-  "/:username",
+  "/me",
+  auth.authenticate,
   catchAsync(async (req, res) => {
     const combinations = await Combination.find({
-      username: req.params.username,
+      username: req.user.username,
       isActive: true,
     });
+    console.log(`User ${req.user.username} is authenticated with token: ${req.user.token}`);
     res.json(combinations);
   })
 );

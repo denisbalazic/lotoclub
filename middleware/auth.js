@@ -11,10 +11,9 @@ const authObj = {};
  */
 authObj.authenticate = async function (req, res, next) {
   try {
+    console.log(req.header("Authorization"));
     const token = req.header("Authorization").replace("Bearer ", "");
-    console.log("TOKEN: ", token);
     const decodedJwt = jwt.verify(token, jwtSecret);
-    console.log(decodedJwt);
     const user = await User.findOne({
       _id: decodedJwt._id,
       "tokens.token": token,
@@ -24,6 +23,7 @@ authObj.authenticate = async function (req, res, next) {
     }
     req.user = user;
     req.token = token;
+    console.log(`User ${req.user.username} is authenticated with token: ${req.token}`);
     next();
   } catch (err) {
     next(err);

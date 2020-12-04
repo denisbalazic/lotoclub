@@ -21,7 +21,7 @@ router.post(
   })
 );
 
-/*
+/**
  * User login
  */
 router.post(
@@ -30,59 +30,102 @@ router.post(
     const user = await userService.login(req.body.username, req.body.password);
     const token = await userService.generateAuthToken(user);
     const response = new ApiResponse(true, { user, token }, null);
-    res.cookie("token", token, { httpOnly: true });
+    // res.cookie("token", token, { httpOnly: true });
     res.status(200).json(response);
   })
 );
 
+/**
+ * User logout
+ */
+router.post(
+  "/logout",
+  auth.authenticate,
+  catchAsync(async function (req, res) {
+    req.user.tokens = req.user.tokens.filter(function (token) {
+      return token.token !== req.token;
+    });
+    await req.user.save();
+    const response = new ApiResponse(true, null, null);
+    res.status(200).json(response);
+  })
+);
+
+/**
+ * Get user that is currently logged in
+ */
 router.get(
   "/me",
   auth.authenticate,
   catchAsync(async (req, res, next) => {
-    const user = await userService.getUser(req.user.id);
-    if (!user) {
-      throw new AppError(404, 1, "User not found");
-    }
-    res.status(200).json(user);
+    // const user = await userService.getUser(req.user.id);
+    // if (!user) {
+    //   throw new AppError(404, 1, "User not found");
+    // }
+    const user = req.user;
+    const response = new ApiResponse(true, { user }, null);
+    res.status(200).json(response);
   })
 );
 
+/**
+ * Update user that is currently logged in
+ * TODO: allow only email and password update (no username?)
+ */
+router.put(
+  "/me",
+  auth.authenticate,
+  joi.validateUserUpdate,
+  catchAsync(async (req, res, next) => {
+    const updatedUser = await userService.updateUser(req.user.id, req.body);
+    const response = new ApiResponse(true, { updatedUser }, null);
+    res.status(200).json(response);
+  })
+);
+
+/**
+ * Get all users
+ * TODO: Maybe this should be available only for admin
+ */
 router.get(
   "/",
+  auth.authenticate,
   catchAsync(async (req, res, next) => {
     const users = await userService.getUsers();
     if (!users) {
       throw new AppError(500, 1, "Something went wrong fetching users from db");
     }
-    res.status(200).json(users);
+    const response = new ApiResponse(true, { users }, null);
+    res.status(200).json(response);
   })
 );
 
+/**
+ * TODO: Only needs to be available only for admin
+ */
 router.get(
   "/:id",
+  auth.authenticate,
   catchAsync(async (req, res, next) => {
     const user = await userService.getUser(req.params.id);
     if (!user) {
       throw new AppError(404, 1, "User not found");
     }
-    res.status(200).json(user);
+    const response = new ApiResponse(true, { user }, null);
+    res.status(200).json(response);
   })
 );
 
-router.put(
-  "/:id",
-  joi.validateUserUpdate,
-  catchAsync(async (req, res, next) => {
-    const updatedUser = await userService.updateUser(req.params.id, req.body);
-    res.json(updatedUser);
-  })
-);
-
+/**
+ * TODO: Only for admin
+ */
 router.delete(
   "/:id",
+  auth.authenticate,
   catchAsync(async (req, res, next) => {
     await userService.deleteUser(req.params.id);
-    res.status(200).send();
+    const response = new ApiResponse(true, null, null);
+    res.status(200).json(response);
   })
 );
 
