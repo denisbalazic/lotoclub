@@ -13,7 +13,7 @@ const cronJob = require("./helpers/cronTimer");
 const { databaseURL, port, secret, jwtSecret } = require("./config");
 const AppError = require("./helpers/AppError");
 
-app.set("view engine", "ejs");
+// app.set("view engine", "ejs");
 app.use(cookieParser());
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -41,7 +41,7 @@ mongoose
 /**
  * Static pages routes
  */
-app.use("/", pageRoutes);
+// app.use("/", (req, res) => res.send("./public/index.html"));
 
 /**
  * Api routes
