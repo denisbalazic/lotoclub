@@ -17,7 +17,7 @@ router.put("/", async (req, res) => {
     for (const user of users) {
       for (const combName of activeCombNames) {
         const lastComb = await Combination.findOne({
-          username: user.username,
+          user: user,
           name: combName,
           isLast: true,
         });
@@ -29,7 +29,7 @@ router.put("/", async (req, res) => {
           lastComb.isLast = false;
           await lastComb.save();
         }
-        newCombination.username = user.username;
+        newCombination.user = user;
         newCombination.name = combName;
         newCombination.draw = settings.draw;
         await newCombination.save();

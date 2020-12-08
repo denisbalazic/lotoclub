@@ -6,7 +6,7 @@ const settingsSchema = new mongoose.Schema({
   canEdit: Boolean,
 });
 
-/* 
+/*
  * Resets settings for new draw
  */
 settingsSchema.statics.resetNewDraw = async function (activeCombNames) {
@@ -15,6 +15,7 @@ settingsSchema.statics.resetNewDraw = async function (activeCombNames) {
   settings.canEdit = true;
   settings.activeCombs = activeCombNames;
   settings.save();
+  console.log(settings.canEdit);
   return settings;
 };
 

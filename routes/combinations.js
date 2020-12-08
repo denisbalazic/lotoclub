@@ -3,11 +3,12 @@ const router = express.Router({ mergeParams: true });
 const Combination = require("../models/combination");
 const User = require("../models/user");
 const Settings = require("../models/settings");
+const auth = require("../middleware/auth");
+const blockEdit = require("../middleware/blockEdit");
 const joi = require("../middleware/joiValidation");
 // const expressSession = require("express-session");
 const catchAsync = require("../helpers/catchAsync");
 const AppError = require("../helpers/AppError");
-const auth = require("../middleware/auth");
 const ApiResponse = require("../helpers/ApiResponse");
 
 /**
@@ -21,13 +22,13 @@ router.get(
     const userCombinations = [];
     const users = await User.find({});
     for (const user of users) {
-      const combs = await Combination.find({
+      const foundCombinations = await Combination.find({
         isActive: true,
-        username: user.username,
+        user: user,
       });
       const userCombination = {
         username: user.username,
-        combinations: combs,
+        combinations: foundCombinations,
       };
       userCombinations.push(userCombination);
     }
@@ -40,13 +41,15 @@ router.get(
  * Get active combinations for logged user
  */
 router.get(
-  "/:username",
+  "/me",
+  auth.authenticate,
   catchAsync(async (req, res) => {
     const combinations = await Combination.find({
-      username: req.params.username,
+      user: req.user,
       isActive: true,
     });
-    res.json(combinations);
+    const response = new ApiResponse(true, combinations, null);
+    res.json(response);
   })
 );
 
@@ -54,11 +57,13 @@ router.get(
  * Update active combinations for logged user
  */
 router.put(
-  "/:username",
+  "/me",
+  auth.authenticate,
+  blockEdit.check,
   joi.validateCombination,
   catchAsync(async (req, res, next) => {
     const combination = await Combination.findOne({
-      username: req.params.username,
+      user: req.user,
       name: req.body.name,
       isActive: true,
     });
@@ -68,7 +73,8 @@ router.put(
     combination.mainNums = req.body.mainNums;
     combination.euroNums = req.body.euroNums;
     await combination.save();
-    res.status(200).json(combination);
+    const response = new ApiResponse(true, combination, null);
+    res.status(200).json(response);
   })
 );
 

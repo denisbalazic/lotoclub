@@ -3,6 +3,7 @@ import { navbar } from "../components/navbar.js";
 import { combinations } from "../scripts/combinations.js";
 
 const combinationsPage = {
+  isProtected: true,
   render: () => {
     return `
       ${header.render(true)}

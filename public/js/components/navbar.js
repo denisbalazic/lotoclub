@@ -12,7 +12,7 @@ const navbar = {
           <li><a href="#">Statistics</a></li>
           <li><a href="#">History</a></li>
           <li><a href="#">Blog</a></li>
-          <li><a href="#">Logout</a></li>
+          <li><a id="logout-btn" href="#">Logout</a></li>
         </ul>
       </nav>
     `;

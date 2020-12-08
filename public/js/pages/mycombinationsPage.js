@@ -4,6 +4,7 @@ import { table } from "../components/table.js";
 import { mycombinations } from "../scripts/mycombinations.js";
 
 const mycombinationsPage = {
+  isProtected: true,
   render: () => {
     return `
       ${header.render(true)}

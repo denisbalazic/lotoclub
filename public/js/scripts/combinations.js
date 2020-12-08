@@ -1,3 +1,5 @@
+import { auth } from "./auth.js";
+
 const combinations = {};
 
 combinations.init = () => {
@@ -32,15 +34,14 @@ combinations.init = () => {
 
   //fetch array of combinations associated by user
   async function fetchCombinations() {
-    const token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZmM0YjY1Y2U5MTJmYTNlZTgwNWM3N2UiLCJpYXQiOjE2MDY3NDY0MjV9.thWR0ZFwSKMCPFzyxbau9a8KfvcJPQ5eZLsr_-CObls";
     try {
       const res = await fetch("http://localhost:3000/api/combinations/", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${auth.token}`,
         },
       });
       const data = await res.json();
+      console.log(data);
       return data;
     } catch (err) {
       console.dir(err);

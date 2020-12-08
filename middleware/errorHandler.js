@@ -18,7 +18,7 @@ errorHandler.proccessError = function (err, req, res, next) {
     err.status = 400;
     const field = Object.keys(err.keyValue)[0];
     const value = err.keyValue[field];
-    err.message = `"${field}: ${value}" already exists in db`;
+    err.message = `${field}: ${value} already exists in db`;
   }
   //Error authenticating user (user is not loged in)
   if (err.message === "invalid token") {
