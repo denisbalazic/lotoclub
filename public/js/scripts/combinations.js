@@ -35,7 +35,7 @@ combinations.init = () => {
   //fetch array of combinations associated by user
   async function fetchCombinations() {
     try {
-      const res = await fetch("http://localhost:3000/api/combinations/", {
+      const res = await fetch("/api/combinations/", {
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },

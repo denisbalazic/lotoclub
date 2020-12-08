@@ -131,7 +131,7 @@ registration.init = () => {
         password: password.value,
         email: email.value,
       };
-      const res = await fetch("http://localhost:3000/api/users", {
+      const res = await fetch("/api/users", {
         method: "POST",
         headers: {
           Accept: "application/json",

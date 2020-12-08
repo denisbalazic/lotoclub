@@ -32,7 +32,7 @@ mycombinations.init = () => {
    */
   async function fetchCombinations() {
     try {
-      const res = await fetch("http://localhost:3000/api/combinations/me", {
+      const res = await fetch("/api/combinations/me", {
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
@@ -186,7 +186,7 @@ mycombinations.init = () => {
    */
   async function postCombination() {
     try {
-      const res = await fetch("http://localhost:3000/api/combinations/me", {
+      const res = await fetch("/api/combinations/me", {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${auth.token}`,
