@@ -120,6 +120,9 @@ registration.init = () => {
         if (field === "username") {
           showError(username, "Username is taken");
         }
+        if (field === "passcode") {
+          showError(passcode, "Passcode is incorect");
+        }
       }
     }
   });

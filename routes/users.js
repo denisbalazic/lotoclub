@@ -5,6 +5,7 @@ const combinationService = require("../services/combinationService");
 const catchAsync = require("../helpers/catchAsync");
 const joi = require("../middleware/joiValidation");
 const auth = require("../middleware/auth");
+const passcode = require("../middleware/passcode");
 const AppError = require("../helpers/AppError");
 const ApiResponse = require("../helpers/ApiResponse");
 
@@ -14,8 +15,8 @@ const ApiResponse = require("../helpers/ApiResponse");
 router.post(
   "/",
   joi.validateUser,
+  passcode.check,
   catchAsync(async (req, res, next) => {
-    delete req.body.passcode;
     const user = await userService.createUser(req.body);
     const token = await userService.generateAuthToken(user);
     await combinationService.addCombinations(user);

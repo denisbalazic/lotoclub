@@ -15,7 +15,7 @@ joiObj.validateUser = (req, res, next) => {
     username: Joi.string().alphanum().min(3).max(16).required(),
     password: Joi.string().min(6).max(19).required(),
     email: Joi.string().email().lowercase().required(),
-    passcode: Joi.string().valid("vjeverica").required(),
+    passcode: Joi.string().required(),
   });
   validate(req, userSchema);
   next();
