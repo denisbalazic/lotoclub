@@ -15,6 +15,7 @@ router.post(
   "/",
   joi.validateUser,
   catchAsync(async (req, res, next) => {
+    delete req.body.passcode;
     const user = await userService.createUser(req.body);
     const token = await userService.generateAuthToken(user);
     await combinationService.addCombinations(user);

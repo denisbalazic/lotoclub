@@ -130,6 +130,7 @@ registration.init = () => {
         username: username.value,
         password: password.value,
         email: email.value,
+        passcode: passcode.value,
       };
       const res = await fetch("/api/users", {
         method: "POST",
