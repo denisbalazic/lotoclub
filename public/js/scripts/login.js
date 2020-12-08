@@ -28,7 +28,7 @@ login.init = function () {
         username: username.value,
         password: password.value,
       };
-      const res = await fetch("http://localhost:3000/api/users/login", {
+      const res = await fetch("/api/users/login", {
         method: "POST",
         headers: {
           Accept: "application/json",
