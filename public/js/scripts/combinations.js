@@ -41,6 +41,7 @@ combinations.init = () => {
         },
       });
       const data = await res.json();
+      console.log(data);
       return data;
     } catch (err) {
       console.dir(err);

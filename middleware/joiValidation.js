@@ -26,23 +26,17 @@ joiObj.validateUserUpdate = (req, res, next) => {
     password: Joi.string().min(6).max(19),
     email: Joi.string().email().lowercase(),
   });
-  validate(req, userSchema);
+  validate(req.body, userSchema);
   next();
 };
 
 joiObj.validateCombination = (req, res, next) => {
   const combinationSchema = Joi.object({
-    mainNums: Joi.array()
-      .items(Joi.number().min(1).max(50))
-      .length(5)
-      .required(),
-    euroNums: Joi.array()
-      .items(Joi.number().min(1).max(10))
-      .length(2)
-      .required(),
+    mainNums: Joi.array().items(Joi.number().min(1).max(50)).length(5).required(),
+    euroNums: Joi.array().items(Joi.number().min(1).max(10)).length(2).required(),
     name: Joi.string().valid("comb-1", "comb-2", "comb-3", "comb-4").required(),
   });
-  validate(req, combinationSchema);
+  validate(req.body, combinationSchema);
   next();
 };
 

@@ -42,6 +42,9 @@ navigation.init = () => {
     const response = await logout();
     if (response.success) {
       auth.token = "";
+      console.log("user is successfully logged out");
+    } else {
+      console.log("something went wrong while logging out");
     }
   });
 
@@ -50,7 +53,6 @@ navigation.init = () => {
    */
   async function logout() {
     try {
-      console.log("Token from logout: ", auth.token);
       const res = await fetch("http://localhost:3000/api/users/logout", {
         method: "POST",
         headers: {

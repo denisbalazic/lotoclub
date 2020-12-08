@@ -11,7 +11,6 @@ const authObj = {};
  */
 authObj.authenticate = async function (req, res, next) {
   try {
-    console.log(req.header("Authorization"));
     const token = req.header("Authorization").replace("Bearer ", "");
     const decodedJwt = jwt.verify(token, jwtSecret);
     const user = await User.findOne({
@@ -19,11 +18,12 @@ authObj.authenticate = async function (req, res, next) {
       "tokens.token": token,
     });
     if (!user) {
+      console.log(`User could not be authenticated`);
       throw new AppError(401, 9, "You need to be loged in");
     }
     req.user = user;
     req.token = token;
-    console.log(`User ${req.user.username} is authenticated with token: ${req.token}`);
+    console.log(`User ${req.user.username} is authenticated`);
     next();
   } catch (err) {
     next(err);

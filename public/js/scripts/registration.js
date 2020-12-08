@@ -108,9 +108,9 @@ registration.init = () => {
     const ch5 = checkPasswordsMatch(password, password2);
     if (ch1 && ch2 && ch3 && ch4 && ch5) {
       const response = await sendFormData();
-      console.log(response);
       if (response.success) {
         auth.token = response.result.token;
+        console.log("user is registrated and logged in");
         window.location.hash = "combinations";
       } else {
         const field = response.error.message.split(":")[0];
@@ -140,6 +140,7 @@ registration.init = () => {
         body: JSON.stringify(userData),
       });
       const data = await res.json();
+      console.log(data);
       return data;
     } catch (e) {
       console.log(e);

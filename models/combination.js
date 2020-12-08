@@ -1,14 +1,11 @@
 const mongoose = require("mongoose");
 
 const combinationSchema = new mongoose.Schema({
-  // user: {
-  //     userId: {
-  //       type: mongoose.Schema.Types.ObjectId,
-  //       ref: "User",
-  //     },
-  //   username: String,
-  // },
-  username: String,
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  username: String, //this is for purposes of easier spotting in mongoDB Compass app
   mainNums: {
     type: [{ type: Number, min: 1, max: 50 }],
   },

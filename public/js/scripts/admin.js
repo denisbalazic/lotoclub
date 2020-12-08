@@ -1,8 +1,8 @@
 import { auth } from "./auth.js";
 
-const mycombinations = {};
+const admin = {};
 
-mycombinations.init = () => {
+admin.init = () => {
   const tabSelectors = document.querySelector(".tab-selectors");
   const combDisplay = document.querySelector(".combination-display");
   const mainCombDisplay = document.querySelectorAll(".combination-display .main");
@@ -32,14 +32,14 @@ mycombinations.init = () => {
    */
   async function fetchCombinations() {
     try {
+      console.log("Token from admin: ", auth.token);
       const res = await fetch("http://localhost:3000/api/combinations/me", {
         headers: {
           Authorization: `Bearer ${auth.token}`,
         },
       });
       const data = await res.json();
-      console.log(data);
-      return data.result;
+      return data;
     } catch (err) {
       console.dir(err);
     }
@@ -186,18 +186,16 @@ mycombinations.init = () => {
    */
   async function postCombination() {
     try {
-      const res = await fetch("http://localhost:3000/api/combinations/me", {
+      const res = await fetch("http://localhost:3000/api/combinations", {
         method: "PUT",
         headers: {
-          Authorization: `Bearer ${auth.token}`,
           Accept: "application/json",
           "Content-type": "application/json",
         },
         body: JSON.stringify(combination),
       });
       const data = await res.json();
-      console.log(data);
-      return data.result;
+      return data;
     } catch (e) {
       console.log(e);
     }
@@ -222,4 +220,4 @@ mycombinations.init = () => {
   }
 };
 
-export { mycombinations };
+export { admin };

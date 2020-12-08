@@ -12,6 +12,8 @@ login.init = function () {
     e.preventDefault();
     const response = await sendFormData();
     if (response.success) {
+      console.log("user is successfully logged in");
+      console.log(response);
       auth.token = response.result.token;
       window.location.hash = "combinations";
     } else {

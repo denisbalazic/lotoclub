@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 const userService = require("../services/userService");
+const combinationService = require("../services/combinationService");
 const catchAsync = require("../helpers/catchAsync");
 const joi = require("../middleware/joiValidation");
 const auth = require("../middleware/auth");
@@ -16,6 +17,7 @@ router.post(
   catchAsync(async (req, res, next) => {
     const user = await userService.createUser(req.body);
     const token = await userService.generateAuthToken(user);
+    await combinationService.addCombinations(user);
     const response = new ApiResponse(true, { user, token }, null);
     res.status(201).json(response);
   })

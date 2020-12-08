@@ -5,6 +5,7 @@ import { loginPage } from "./pages/loginPage.js";
 import { combinationsPage } from "./pages/combinationsPage.js";
 import { mycombinationsPage } from "./pages/mycombinationsPage.js";
 import { tablePage } from "./pages/tablePage.js";
+import { adminPage } from "./pages/adminPage.js";
 import { errorPage } from "./pages/errorPage.js";
 import { auth } from "./scripts/auth.js";
 
@@ -16,6 +17,7 @@ const routes = [
   { path: "combinations", page: combinationsPage },
   { path: "mycombinations", page: mycombinationsPage },
   { path: "table", page: tablePage },
+  { path: "admin", page: adminPage },
 ];
 
 const parseLocation = () => location.hash.slice(1).toLowerCase() || "";
