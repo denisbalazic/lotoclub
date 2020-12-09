@@ -8,6 +8,7 @@ const pageRoutes = require("./routes/pages");
 const usersRoutes = require("./routes/users");
 const settingsRoutes = require("./routes/settings");
 const combinationsRoutes = require("./routes/combinations");
+const numbersRoutes = require("./routes/numbers");
 const errorHandler = require("./middleware/errorHandler");
 const cronJob = require("./helpers/cronTimer");
 const { databaseURL, port, secret, jwtSecret } = require("./config");
@@ -51,6 +52,7 @@ mongoose
 app.use("/api/users", usersRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/combinations", combinationsRoutes);
+app.use("/api/numbers", numbersRoutes);
 
 /**
  * Route not found

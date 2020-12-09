@@ -7,8 +7,11 @@ const numberSchema = new mongoose.Schema({
   },
   num: Number,
   frequency: Number,
+  freqTag: Boolean,
   lastDraw: Number,
-  occurency: Number,
+  drawTag: Boolean,
+  occurrence: Number,
+  occurrTag: Boolean,
 });
 
 module.exports = mongoose.model("Number", numberSchema);

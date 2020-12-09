@@ -9,22 +9,42 @@ mycombinations.init = () => {
   const euroCombDisplay = document.querySelectorAll(".combination-display .euro");
   const mainNumbers = document.querySelectorAll("#numbers-table .main .number");
   const euroNumbers = document.querySelectorAll("#numbers-table .euro .number");
-  const numbers = document.querySelector("#numbers-table");
+  const numbersTab = document.querySelector("#numbers-table");
   const saveBtn = document.querySelector("#save-btn");
   const info = document.querySelector("#info");
 
-  let combIndex = 0;
   let combinations = [];
   let combination;
+  let numbers;
 
   init();
 
   async function init() {
+    numbers = await fetchNumbers();
+    console.log(numbers);
     combinations = await fetchCombinations();
     combination = combinations[0];
     createTabSelectors();
     displayCombination();
     styleTable();
+  }
+
+  /**
+   * Fetch numbers with stats
+   */
+  async function fetchNumbers() {
+    try {
+      const res = await fetch("/api/numbers", {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      const data = await res.json();
+      console.log(data);
+      return data.result;
+    } catch (err) {
+      console.dir(err);
+    }
   }
 
   /*
@@ -67,10 +87,7 @@ mycombinations.init = () => {
    * Switches between different combinations
    */
   tabSelectors.addEventListener("click", (e) => {
-    combIndex = parseInt(e.target.id.slice(-1)) - 1;
-    combination = combinations.filter((comb) => {
-      return comb.name === e.target.id;
-    })[0];
+    combination = combinations.filter((comb) => comb.name === e.target.id)[0];
     displayCombination();
     styleTable();
     for (const tab of tabSelectors.children) {
@@ -130,7 +147,7 @@ mycombinations.init = () => {
   /*
    * Triggers adding or deleting numbers from combination
    */
-  numbers.addEventListener("click", (e) => {
+  numbersTab.addEventListener("click", (e) => {
     const selectedNum = parseInt(e.target.innerText);
     if (e.target.closest(".column.main")) {
       addNumber(selectedNum, "mainNums");
@@ -168,9 +185,7 @@ mycombinations.init = () => {
    */
   saveBtn.addEventListener("click", async () => {
     if (combination.mainNums.length === 5 && combination.euroNums.length === 2) {
-      const index = combinations.findIndex((comb) => {
-        return comb.name === combination.name;
-      });
+      const index = combinations.findIndex((comb) => comb.name === combination.name);
       combinations[index] = combination;
       delete combination.isEdited;
       const data = await postCombination();
