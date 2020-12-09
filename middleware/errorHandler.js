@@ -28,8 +28,8 @@ errorHandler.proccessError = function (err, req, res, next) {
   const { status = 500, code = 0, message = "Something went wrong" } = err;
   const appError = new AppError(status, code, message);
   const response = new ApiResponse(false, null, appError);
+  console.log(err);
   res.status(status).json(response);
-  console.dir(err);
 };
 
 module.exports = errorHandler;

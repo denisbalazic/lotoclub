@@ -12,70 +12,17 @@ admin.init = () => {
   const numbers = document.querySelector("#numbers-table");
   const saveBtn = document.querySelector("#save-btn");
   const info = document.querySelector("#info");
+  const activeCombCheckboxes = document.querySelectorAll("#active-combinations input");
 
-  let combIndex = 0;
-  let combinations = [];
-  let combination;
+  let activeCombs = [];
+  let combination = {
+    mainNums: [],
+    euroNums: [],
+  };
 
   init();
 
-  async function init() {
-    combinations = await fetchCombinations();
-    combination = combinations[0];
-    createTabSelectors();
-    displayCombination();
-    styleTable();
-  }
-
-  /*
-   * Fetch combinations from server api
-   */
-  async function fetchCombinations() {
-    try {
-      console.log("Token from admin: ", auth.token);
-      const res = await fetch("http://localhost:3000/api/combinations/me", {
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
-        },
-      });
-      const data = await res.json();
-      return data;
-    } catch (err) {
-      console.dir(err);
-    }
-  }
-
-  /*
-   * Create tabSelectors for combination control
-   * according to fetched combinations data
-   */
-  function createTabSelectors() {
-    let i = 1;
-    for (const comb of combinations) {
-      const tab = document.createElement("button");
-      tab.classList.add("tab-selector");
-      i === 1 && tab.classList.add("selected");
-      tab.id = comb.name;
-      tab.innerText = comb.name; // <--------------------- change to custom name "Glavna", "Dodatna" etc (switch)!!!!!!!!!
-      tabSelectors.append(tab);
-      i++;
-    }
-  }
-
-  /*
-   * Tabs control
-   * Switches between different combinations
-   */
-  tabSelectors.addEventListener("click", (e) => {
-    combIndex = parseInt(e.target.id.slice(-1)) - 1;
-    combination = combinations[combIndex];
-    displayCombination();
-    styleTable();
-    for (const tab of tabSelectors.children) {
-      tab.classList.remove("selected");
-    }
-    e.target.classList.add("selected");
-  });
+  async function init() {}
 
   /*
    * Populate combination display
@@ -91,13 +38,9 @@ admin.init = () => {
       number.innerText = combination.euroNums[i] || "";
       i++;
     }
-    combDisplay.classList.remove("editing");
     info.innerText = "";
-    if (combination.isEdited) {
-      combDisplay.classList.add("editing");
-      if (combination.mainNums.length === 5 && combination.euroNums.length === 2) {
-        info.innerText = "Trebate spremiti novu kombinaciju";
-      }
+    if (combination.mainNums.length === 5 && combination.euroNums.length === 2) {
+      info.innerText = "Trebate spremiti novu kombinaciju";
     }
   }
 
@@ -156,7 +99,15 @@ admin.init = () => {
       console.log("cant add or delete number");
       return false;
     }
-    combination.isEdited = true;
+  }
+
+  /**
+   * Saving active combinations for next draw from checkboxes
+   */
+  function getActiveCombs() {
+    for (const checkbox of activeCombCheckboxes) {
+      checkbox.checked && activeCombs.push(checkbox.value);
+    }
   }
 
   /*
@@ -166,10 +117,10 @@ admin.init = () => {
    */
   saveBtn.addEventListener("click", async () => {
     if (combination.mainNums.length === 5 && combination.euroNums.length === 2) {
-      combinations[combIndex] = combination;
-      delete combination.isEdited;
-      const data = await postCombination();
-      if (data) {
+      getActiveCombs();
+      const data = await postSettings();
+      if (data.success) {
+        activeCombs = [];
         displayCombination();
         styleTable();
         showMessage("Kombinacija uspješno spremljena", "success");
@@ -184,15 +135,16 @@ admin.init = () => {
   /*
    * Post combination to server
    */
-  async function postCombination() {
+  async function postSettings() {
     try {
-      const res = await fetch("http://localhost:3000/api/combinations", {
+      const res = await fetch("/api/settings", {
         method: "PUT",
         headers: {
+          Authorization: `Bearer ${auth.token}`,
           Accept: "application/json",
           "Content-type": "application/json",
         },
-        body: JSON.stringify(combination),
+        body: JSON.stringify({ combination, activeCombs }),
       });
       const data = await res.json();
       return data;

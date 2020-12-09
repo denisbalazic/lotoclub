@@ -315,3 +315,9 @@ button.tab-selector:hover {
   color: var(--success-green);
   /* background-color: var(--powder-blue); */
 }
+
+/************ Admin *****************/
+#active-combinations {
+  margin: 12px;
+  padding-left: 5px;
+}

@@ -4,9 +4,21 @@ const mongoose = require("mongoose");
 const User = require("../models/user");
 const Settings = require("../models/settings");
 const Combination = require("../models/combination");
+const catchAsync = require("../helpers/catchAsync");
+const auth = require("../middleware/auth");
+const ApiResponse = require("../helpers/ApiResponse");
 
-router.put("/", async (req, res) => {
-  try {
+router.put(
+  "/",
+  auth.authenticate,
+  auth.authorize,
+  catchAsync(async (req, res, next) => {
+    console.log(req.body);
+    const newWinnerCombination = new Combination();
+    newWinnerCombination.isWinning = true;
+    newWinnerCombination.mainNums = req.body.combination.mainNums;
+    newWinnerCombination.euroNums = req.body.combination.euroNums;
+    newWinnerCombination.save();
     //update settings with array of combination names to be played in next draw
     const activeCombNames = req.body.activeCombs;
     const settings = await Settings.resetNewDraw(activeCombNames);
@@ -35,11 +47,9 @@ router.put("/", async (req, res) => {
         await newCombination.save();
       }
     }
-    res.status(200).send("ok");
-  } catch (err) {
-    console.log("Error in settings route: ", err);
-    res.status(500).send(err);
-  }
-});
+    const response = new ApiResponse(true, null, null);
+    res.status(200).json(response);
+  })
+);
 
 module.exports = router;

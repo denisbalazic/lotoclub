@@ -18,7 +18,7 @@ const ApiResponse = require("../helpers/ApiResponse");
 router.get(
   "/",
   auth.authenticate,
-  catchAsync(async (req, res) => {
+  catchAsync(async (req, res, next) => {
     const userCombinations = [];
     const users = await User.find({});
     for (const user of users) {
@@ -43,7 +43,7 @@ router.get(
 router.get(
   "/me",
   auth.authenticate,
-  catchAsync(async (req, res) => {
+  catchAsync(async (req, res, next) => {
     const combinations = await Combination.find({
       user: req.user,
       isActive: true,
@@ -75,6 +75,22 @@ router.put(
     await combination.save();
     const response = new ApiResponse(true, combination, null);
     res.status(200).json(response);
+  })
+);
+
+router.post(
+  "/winner",
+  auth.authenticate,
+  // auth.authorize,
+  joi.validateCombination,
+  catchAsync(async (req, res, next) => {
+    const newWinnerCombination = new Combination();
+    newWinnerCombination.isWinning = true;
+    newWinnerCombination.mainNums = req.body.mainNums;
+    newWinnerCombination.euroNums = req.body.euroNums;
+    newWinnerCombination.save();
+    const response = new ApiResponse(true, null, null);
+    res.status(201).json(response);
   })
 );
 

@@ -52,7 +52,6 @@ combinations.init = () => {
     if (err.code === 9) {
       location.hash = "#login";
     } else {
-      window.location.pathname = "#retwetfdgdk";
     }
   }
 

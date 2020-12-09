@@ -68,7 +68,9 @@ mycombinations.init = () => {
    */
   tabSelectors.addEventListener("click", (e) => {
     combIndex = parseInt(e.target.id.slice(-1)) - 1;
-    combination = combinations[combIndex];
+    combination = combinations.filter((comb) => {
+      return comb.name === e.target.id;
+    })[0];
     displayCombination();
     styleTable();
     for (const tab of tabSelectors.children) {
@@ -166,7 +168,10 @@ mycombinations.init = () => {
    */
   saveBtn.addEventListener("click", async () => {
     if (combination.mainNums.length === 5 && combination.euroNums.length === 2) {
-      combinations[combIndex] = combination;
+      const index = combinations.findIndex((comb) => {
+        return comb.name === combination.name;
+      });
+      combinations[index] = combination;
       delete combination.isEdited;
       const data = await postCombination();
       if (data) {

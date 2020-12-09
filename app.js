@@ -39,11 +39,6 @@ mongoose
   });
 
 /**
- * Static pages routes
- */
-// app.use("/", (req, res) => res.send("./public/index.html"));
-
-/**
  * Api routes
  */
 app.use("/api/users", usersRoutes);

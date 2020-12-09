@@ -2,6 +2,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const { jwtSecret } = require("../config");
 const AppError = require("../helpers/AppError");
+const user = require("../models/user");
 const authObj = {};
 
 /*
@@ -24,6 +25,18 @@ authObj.authenticate = async function (req, res, next) {
     req.user = user;
     req.token = token;
     console.log(`User ${req.user.username} is authenticated`);
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+authObj.authorize = async function (req, res, next) {
+  try {
+    if (!req.user.isAdmin) {
+      console.log("User is not authorized");
+      throw new AppError(401, 9, "For admin only");
+    }
+    console.log(`User ${req.user.username} is authorized`);
     next();
   } catch (err) {
     next(err);
