@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 
 const numberSchema = new mongoose.Schema({
   numType: {
+    type: String,
     enum: ["main", "euro"],
   },
   num: Number,

@@ -39,6 +39,13 @@ mongoose
   });
 
 /**
+ * Populate db with numbers and their coresponding statistics
+ * need to update numbers.js to newest data before going in production
+ */
+// const numbers = require("./helpers/numbers");
+// numbers.populate();
+
+/**
  * Api routes
  */
 app.use("/api/users", usersRoutes);

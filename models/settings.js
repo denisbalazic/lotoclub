@@ -14,8 +14,7 @@ settingsSchema.statics.resetNewDraw = async function (activeCombNames) {
   settings.draw += 1;
   settings.canEdit = true;
   settings.activeCombs = activeCombNames;
-  settings.save();
-  console.log(settings.canEdit);
+  await settings.save();
   return settings;
 };
 
