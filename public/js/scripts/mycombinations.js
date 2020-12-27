@@ -129,6 +129,7 @@ mycombinations.init = () => {
 
     function styleNums(tabNums, nums, n) {
       for (let number of tabNums) {
+        //TODO: Style number statistics (frequency, lastDraw, occurrance)
         number.classList.remove("selected");
         for (let num of nums) {
           if (parseInt(number.innerText) === num) {

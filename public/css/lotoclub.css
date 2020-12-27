@@ -281,17 +281,17 @@ button.tab-selector:hover {
 
 /*********** Table **************************/
 #numbers-table {
-  display: flex;
+  /* display: flex; */
   padding: 10px;
   background-color: var(--honeydew);
 }
 
 #numbers-table .column {
-  flex-grow: 1;
+  /* flex-grow: 1; */
 }
 
 #numbers-table .column.euro {
-  margin-left: 10px;
+  /* margin-left: 10px; */
 }
 
 #numbers-table .number {
@@ -320,4 +320,18 @@ button.tab-selector:hover {
 #active-combinations {
   margin: 12px;
   padding-left: 5px;
+}
+
+/**************** Grid table ***********/
+#numbers-table {
+  display: flex;
+}
+
+#numbers-table .main {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+}
+#numbers-table .euro {
+  width: 20%;
 }
