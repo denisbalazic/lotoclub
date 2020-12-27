@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# lotoclub
-App for organizing group of eurojackpot players
-=======
 # Lotoclub
 
 Goal of this app is to help group of Eurojackpot players organize their play.
@@ -23,4 +19,4 @@ Users can register, add and update their combinations for next draw, checkout ot
 # Project Status
 
 This is work in progress. Planning on refactoring frontend to React soon.
->>>>>>> table
+
