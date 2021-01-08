@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const mongoose = require("mongoose");
@@ -13,6 +14,12 @@ const errorHandler = require("./middleware/errorHandler");
 const cronJob = require("./helpers/cronTimer");
 const { databaseURL, port, secret, jwtSecret } = require("./config");
 const AppError = require("./helpers/AppError");
+
+const corsOptions = {
+  origin: "http://localhost:3000",
+};
+
+app.use(cors(corsOptions));
 
 // app.set("view engine", "ejs");
 app.use(cookieParser());
@@ -77,5 +84,5 @@ cronJob.start();
  * Start server
  */
 app.listen(port, () => {
-  console.log("Lotoclub has started");
+  console.log(`Lotoclub has started on port: http://localhost:${port}`);
 });
