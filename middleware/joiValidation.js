@@ -41,4 +41,13 @@ joiObj.validateCombination = (req, res, next) => {
   next();
 };
 
+joiObj.validateGroup = (req, res, next) => {
+  const groupSchema = Joi.object({
+    name: Joi.string().min(2).max(16).required(),
+    passcode: Joi.string().min(6).max(19),
+  });
+  validate(req.body, groupSchema);
+  next();
+};
+
 module.exports = joiObj;

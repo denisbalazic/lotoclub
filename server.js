@@ -10,6 +10,7 @@ const usersRoutes = require("./routes/users");
 const settingsRoutes = require("./routes/settings");
 const combinationsRoutes = require("./routes/combinations");
 const numbersRoutes = require("./routes/numbers");
+const groupsRoutes = require("./routes/groups");
 const errorHandler = require("./middleware/errorHandler");
 const cronJob = require("./helpers/cronTimer");
 const { databaseURL, port, secret, jwtSecret } = require("./config");
@@ -60,6 +61,7 @@ app.use("/api/users", usersRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/combinations", combinationsRoutes);
 app.use("/api/numbers", numbersRoutes);
+app.use("/api/groups/", groupsRoutes);
 
 /**
  * Route not found
