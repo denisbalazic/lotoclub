@@ -3,7 +3,7 @@
  * TODO: Handle server errors and connection errors with message
  * TODO: Create helper module for validating form inputs
  */
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { authService } from "../service/auth";
 
@@ -16,22 +16,19 @@ function checkEmail(email) {
   }
 }
 
-class RegisterPage extends Component {
-  state = {
-    fields: {
-      username: "",
-      email: "",
-      password: "",
-      password2: "",
-      passcode: "",
-    },
-    errors: {},
-    registrationSuccess: false,
-    shouldRedirect: false,
-  };
+const RegisterPage = () => {
+  const [fields, setFields] = useState({
+    username: "",
+    email: "",
+    password: "",
+    password2: "",
+    passcode: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [shouldRedirect, setShouldRedirect] = useState(false);
 
-  validate = () => {
-    const { username, email, password, password2, passcode } = this.state.fields;
+  const validate = () => {
+    const { username, email, password, password2, passcode } = fields;
     const errors = {};
     if (username.length > 16) errors["username"] = "Username should have less then 16 characters";
     if (username.length < 3) errors["username"] = "Username should have at least 3 characters";
@@ -43,125 +40,119 @@ class RegisterPage extends Component {
     if (password !== password2) errors["password2"] = "Passwords do not match";
     if (password2 === "") errors["password2"] = "Password confirmation is required";
     if (passcode === "") errors["passcode"] = "Passcode is required";
-    this.setState({ errors: errors });
+    setErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  setResponseErrors = (msg) => {
+  const setResponseErrors = (msg) => {
     const errors = {};
     const field = msg.split(":")[0];
     if (field === "email") errors["email"] = "There is user with this email";
     if (field === "username") errors["username"] = "Username is taken";
     if (field === "passcode") errors["passcode"] = "Passcode is incorect";
-    this.setState({ errors: errors });
+    setErrors(errors);
   };
 
-  handleChange = (e) => {
-    const fields = this.state.fields;
-    fields[e.target.name] = e.target.value;
-    this.setState({
-      fields: fields,
-    });
+  const handleChange = (e) => {
+    setFields({ ...fields, [e.target.name]: e.target.value });
   };
 
-  handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const isValidated = this.validate();
+    const isValidated = validate();
     if (isValidated) {
       const res = await authService.register({
-        username: this.state.fields.username,
-        password: this.state.fields.password,
-        email: this.state.fields.email,
-        passcode: this.state.fields.passcode,
+        username: fields.username,
+        password: fields.password,
+        email: fields.email,
+        passcode: fields.passcode,
       });
       if (res.success) {
         //TODO: handle successful registration with message
-        this.setState({ shouldRedirect: true });
+        setShouldRedirect(true);
       } else {
-        this.setResponseErrors(res.error.message);
+        setResponseErrors(res.error.message);
       }
     }
   };
 
-  render() {
-    const { username, email, password, password2, passcode } = this.state.fields;
-    if (this.state.shouldRedirect) {
-      return <Redirect to="/combinations" />;
-    } else {
-      return (
-        <main>
-          <i className="fas fa-dice-d20"></i>
-          <form id="form" action="">
-            <div className="form-control">
-              <label htmlFor="username">Username</label>
-              <input
-                id="username"
-                type="text"
-                name="username"
-                placeholder="Enter username"
-                value={username}
-                onChange={this.handleChange}
-              />
-              <div className="error-msg">{this.state.errors.username}</div>
-            </div>
-            <div className="form-control">
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="text"
-                name="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={this.handleChange}
-              />
-              <div className="error-msg">{this.state.errors.email}</div>
-            </div>
-            <div className="form-control">
-              <label htmlFor="password">Password</label>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Enter password"
-                value={password}
-                onChange={this.handleChange}
-              />
-              <div className="error-msg">{this.state.errors.password}</div>
-            </div>
-            <div className="form-control">
-              <label htmlFor="password2">Confirm password</label>
-              <input
-                id="password2"
-                type="password"
-                name="password2"
-                placeholder="Repeat password"
-                value={password2}
-                onChange={this.handleChange}
-              />
-              <div className="error-msg">{this.state.errors.password2}</div>
-            </div>
-            <div className="form-control">
-              <label htmlFor="passcode">Passcode</label>
-              <input
-                id="passcode"
-                type="text"
-                name="passcode"
-                placeholder="Enter passcode"
-                value={passcode}
-                onChange={this.handleChange}
-              />
-              <div className="error-msg">{this.state.errors.passcode}</div>
-            </div>
-            <button id="submit-btn" onClick={this.handleSubmit}>
-              Submit
-            </button>
-          </form>
-          <i className="fas fa-hand-holding-usd"></i>
-          <i className="fas fa-handshake"></i>
-        </main>
-      );
-    }
+  const { username, email, password, password2, passcode } = fields;
+  if (shouldRedirect) {
+    return <Redirect to="/combinations" />;
+  } else {
+    return (
+      <main>
+        <i className="fas fa-dice-d20"></i>
+        <form id="form" action="">
+          <div className="form-control">
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              placeholder="Enter username"
+              value={username}
+              onChange={handleChange}
+            />
+            <div className="error-msg">{errors.username}</div>
+          </div>
+          <div className="form-control">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="text"
+              name="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={handleChange}
+            />
+            <div className="error-msg">{errors.email}</div>
+          </div>
+          <div className="form-control">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={handleChange}
+            />
+            <div className="error-msg">{errors.password}</div>
+          </div>
+          <div className="form-control">
+            <label htmlFor="password2">Confirm password</label>
+            <input
+              id="password2"
+              type="password"
+              name="password2"
+              placeholder="Repeat password"
+              value={password2}
+              onChange={handleChange}
+            />
+            <div className="error-msg">{errors.password2}</div>
+          </div>
+          <div className="form-control">
+            <label htmlFor="passcode">Passcode</label>
+            <input
+              id="passcode"
+              type="text"
+              name="passcode"
+              placeholder="Enter passcode"
+              value={passcode}
+              onChange={handleChange}
+            />
+            <div className="error-msg">{errors.passcode}</div>
+          </div>
+          <button id="submit-btn" onClick={handleSubmit}>
+            Submit
+          </button>
+        </form>
+        <i className="fas fa-hand-holding-usd"></i>
+        <i className="fas fa-handshake"></i>
+      </main>
+    );
   }
-}
+};
 
 export default RegisterPage;

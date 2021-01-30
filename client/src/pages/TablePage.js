@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
 import NumbersTable from "../components/NumbersTable";
 
-export default class TablePage extends Component {
-  render() {
-    return (
-      <div>
-        Table
-        <NumbersTable />
-      </div>
-    );
-  }
-}
+const TablePage = () => {
+  return (
+    <div>
+      Table
+      <NumbersTable />
+    </div>
+  );
+};
+
+export default TablePage;

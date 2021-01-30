@@ -1,13 +1,13 @@
-import React, { Component } from "react";
+import React from "react";
 import Number from "./Number";
 
-export default class NumbersTable extends Component {
-  render() {
-    return (
-      <div>
-        NumbersTable
-        <Number />
-      </div>
-    );
-  }
-}
+const NumbersTable = () => {
+  return (
+    <div>
+      NumbersTable
+      <Number />
+    </div>
+  );
+};
+
+export default NumbersTable;
